@@ -1,0 +1,346 @@
+/* Kambaz Layout */
+#wd-kambaz {
+  width: 100%;
+  min-height: 100vh;
+}
+
+#wd-kambaz > .flex-fill {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+}
+
+/* Kambaz Navigation Styles */
+.kambaz-nav {
+  background-color: #000000 !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  width: 100px !important;
+  z-index: 1000 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  flex-shrink: 0;
+}
+
+.kambaz-nav .list-group-item {
+  padding: 15px 0;
+  border: none !important;
+  background-color: #000000 !important;
+}
+
+.nav-link-custom {
+  color: white; /* White text for all items */
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-link-custom .fs-1 {
+  color: #e63946; /* Red color for all icons */
+  font-size: 1.8rem;
+}
+
+/* Account icon - grey color */
+#wd-account-link .fs-1 {
+  color: #6c757d !important; /* Grey color for Account icon */
+}
+
+/* Hover effect */
+.nav-link-custom:hover {
+  color: white;
+}
+.nav-link-custom:hover .fs-1 {
+  color: #e63946;
+}
+
+/* Active link - white background with red icon and red text */
+.active-link {
+  background-color: white !important;
+  border-radius: 0;
+  margin: 0;
+  padding: 15px 0 !important;
+}
+
+.active-link .nav-link-custom {
+  color: #e63946 !important; /* Red text for active */
+  font-weight: 600;
+}
+
+.active-link .nav-link-custom .fs-1 {
+  color: #e63946 !important; /* Red icon for active */
+}
+
+/* Logo styling */
+#wd-neu-logo {
+  padding: 15px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#wd-neu-logo img {
+  transition: opacity 0.3s ease;
+}
+
+#wd-neu-logo:hover img {
+  opacity: 0.8;
+}
+
+/* Main content area */
+.main-content {
+  margin-left: 100px;
+  padding: 20px;
+  min-height: 100vh;
+  background-color: #ffffff;
+}
+
+/* Account main content with reduced spacing */
+.account-main-content {
+  padding: 0px;
+  min-height: 100vh;
+  background-color: #ffffff;
+}
+
+/* Account navigation styles */
+#wd-account-navigation {
+  min-width: 200px;
+  max-width: 200px;
+  margin-right: 0px;
+  flex-shrink: 0;
+}
+
+#wd-account .flex-fill {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+}
+
+#wd-account-navigation .list-group-item {
+  border: none !important;
+  background-color: transparent;
+  color: #dc3545;
+  padding: 10px 15px;
+}
+
+#wd-account-navigation {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+#wd-account-navigation.list-group {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+#wd-account-navigation .list-group-item.active {
+  background-color: transparent !important;
+  color: #000000 !important;
+  font-weight: 600;
+  border-left: 3px solid #000000 !important;
+}
+
+#wd-account-navigation .list-group-item:hover {
+  background-color: #f8f9fa;
+  color: #dc3545;
+}
+
+#wd-account-navigation .list-group-item.active:hover {
+  background-color: transparent !important;
+  color: #000000 !important;
+  border-left: 3px solid #000000 !important;
+}
+
+/* Course navigation styles */
+#wd-courses-navigation {
+  min-width: 200px;
+  max-width: 200px;
+  margin-right: 20px;
+  flex-shrink: 0;
+}
+
+/* Course content area - THIS IS THE KEY FIX */
+#wd-courses .flex-fill {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+}
+
+#wd-courses-navigation .list-group-item {
+  border: none !important;
+  background-color: transparent;
+  color: #dc3545;
+  padding: 10px 15px;
+}
+
+#wd-courses-navigation .list-group-item.active {
+  background-color: transparent !important;
+  color: #000000 !important;
+  font-weight: 600;
+  border-left: 3px solid #000000 !important;
+}
+
+#wd-courses-navigation .list-group-item:hover {
+  background-color: #f8f9fa;
+  color: #dc3545;
+}
+
+#wd-courses-navigation .list-group-item.active:hover {
+  background-color: transparent !important;
+  color: #000000 !important;
+}
+
+/* Modules styles */
+.wd-module .wd-title {
+  background-color: #f5f5f5 !important;
+}
+
+.wd-lesson {
+  border-left: 3px solid #28a745 !important;
+  background-color: #ffffff !important;
+}
+
+/* Assignments styles */
+#wd-assignments {
+  width: 100%;
+  max-width: 100%;
+  display: block;
+  box-sizing: border-box;
+}
+
+/* Top Bar: Search and Buttons */
+.assignments-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  gap: 1rem;
+}
+
+/* Responsive top bar */
+@media (max-width: 768px) {
+  .assignments-top-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .assignments-top-bar .input-group {
+    max-width: 100% !important;
+  }
+}
+
+/* Assignments Section */
+.assignments-section {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.assignments-section-header {
+  background-color: #f5f5f5;
+  padding: 0.75rem 1rem;
+  border: 1px solid #dee2e6;
+  border-bottom: none;
+  font-weight: 600;
+  width: 100%;
+}
+
+/* Assignment List */
+#wd-assignments .list-group {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#wd-assignments .list-group-item {
+  width: 100%;
+  box-sizing: border-box;
+  border-left: 3px solid #28a745 !important;
+}
+
+/* Assignment Editor Styles */
+#wd-assignments-editor {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  padding: 20px;
+}
+
+.wd-assignment-nav {
+  min-width: 200px;
+  max-width: 200px;
+  background-color: white;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  height: fit-content;
+}
+
+.wd-assignment-nav .list-group-item {
+  border: none !important;
+  background-color: transparent;
+  color: #dc3545;
+  padding: 8px 0;
+  font-size: 0.9rem;
+}
+
+.wd-assignment-nav .list-group-item.active {
+  background-color: transparent !important;
+  color: #000000 !important;
+  font-weight: 600;
+}
+
+.wd-assignment-nav .list-group-item:hover {
+  background-color: #f8f9fa;
+  color: #dc3545;
+}
+
+.wd-assignment-nav .list-group-item.active:hover {
+  background-color: transparent !important;
+  color: #000000 !important;
+}
+
+#wd-assignments-editor .flex-fill {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+#wd-assignments-editor .form-control,
+#wd-assignments-editor .form-select {
+  border-color: #dee2e6;
+  border-radius: 4px;
+}
+
+#wd-assignments-editor .form-control:focus,
+#wd-assignments-editor .form-select:focus {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Hide native calendar icons */
+#wd-assignments-editor input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  display: none !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+#wd-assignments-editor input[type="datetime-local"]::-webkit-inner-spin-button,
+#wd-assignments-editor input[type="datetime-local"]::-webkit-outer-spin-button {
+  display: none !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+#wd-assignments-editor input[type="datetime-local"] {
+  background-image: none !important;
+}
+

@@ -1,6 +1,11 @@
-import { redirect } from "next/dist/client/components/navigation";
-
+import AccountNavigation from "./Navigation";
 
 export default function AccountPage() {
- redirect("/Account/Signin");
+  return (
+    <div className="d-flex">
+      <AccountNavigation />
+      <div className="flex-fill">
+      </div>
+    </div>
+  );
 }
