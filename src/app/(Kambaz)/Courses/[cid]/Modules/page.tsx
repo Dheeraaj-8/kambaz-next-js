@@ -1,6 +1,7 @@
 "use client";
 import { useParams } from "next/navigation";
 import * as db from "@/app/(Kambaz)/Database/page";
+import { Module, Lesson } from "@/app/(Kambaz)/Database/modules";
 import { ListGroup, ListGroupItem } from "react-bootstrap";
 import { BsGripVertical } from "react-icons/bs";
 import ModuleControlButtons from "./ModulesControlButtons";
@@ -9,14 +10,14 @@ import LessonControlButtons from "./LessonControlButtons";
 
 export default function Modules() {
   const { cid } = useParams();
-  const modules = db.modules.filter((module: any) => module.course === cid);
+  const modules = db.modules.filter((module: Module) => module.course === cid);
 
   return (
     <div>
       <ModulesControls />
 
       <ListGroup className="rounded-0" id="wd-modules">
-        {modules.map((module: any) => (
+        {modules.map((module: Module) => (
           <ListGroupItem
             key={module._id || module.name}
             className="wd-module p-0 mb-5 fs-5 border-gray"
@@ -30,7 +31,7 @@ export default function Modules() {
             {/* Lessons list */}
             {module.lessons && module.lessons.length > 0 && (
               <ListGroup className="wd-lessons rounded-0">
-                {module.lessons.map((lesson: any) => (
+                {module.lessons.map((lesson: Lesson) => (
                   <ListGroupItem
                     key={lesson._id || lesson.name}
                     className="wd-lesson p-3 ps-1"

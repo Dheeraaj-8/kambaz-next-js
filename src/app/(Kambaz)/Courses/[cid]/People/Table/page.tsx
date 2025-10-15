@@ -5,6 +5,8 @@ import { useParams } from "next/navigation";
 import { Table } from "react-bootstrap";
 import { FaUserCircle } from "react-icons/fa";
 import { users, enrollments } from "@/app/(Kambaz)/Database/page";
+import { User } from "@/app/(Kambaz)/Database/users";
+import { Enrollment } from "@/app/(Kambaz)/Database/enrollments";
 
 export default function PeopleTable() {
   const params = useParams();
@@ -12,9 +14,9 @@ export default function PeopleTable() {
 
   // users and enrollments are now imported directly
 
-  const filteredUsers = users.filter((usr: any) =>
+  const filteredUsers = users.filter((usr: User) =>
     enrollments.some(
-      (enrollment: any) => enrollment.user === usr._id && enrollment.course === cid
+      (enrollment: Enrollment) => enrollment.user === usr._id && enrollment.course === cid
     )
   );
 
@@ -32,7 +34,7 @@ export default function PeopleTable() {
           </tr>
         </thead>
         <tbody>
-          {filteredUsers.map((user: any) => (
+          {filteredUsers.map((user: User) => (
             <tr key={user._id}>
               <td className="wd-full-name text-nowrap">
                 <FaUserCircle className="me-2 fs-1 text-secondary" />
