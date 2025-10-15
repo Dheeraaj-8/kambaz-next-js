@@ -1,0 +1,430 @@
+[
+    {
+      "_id": "M101",
+      "name": "Introduction to Rocket Propulsion",
+      "description": "Basic principles of rocket propulsion and rocket engines.",
+      "course": "RS101",
+      "lessons": [
+        {
+          "_id": "L101",
+          "name": "History of Rocketry",
+          "description": "A brief history of rocketry and space exploration.",
+          "module": "M101"
+        },
+        {
+          "_id": "L102",
+          "name": "Rocket Propulsion Fundamentals",
+          "description": "Basic principles of rocket propulsion.",
+          "module": "M101"
+        },
+        {
+          "_id": "L103",
+          "name": "Rocket Engine Types",
+          "description": "Overview of different types of rocket engines.",
+          "module": "M101"
+        }
+      ]
+    },
+    {
+      "_id": "M102",
+      "name": "Fuel and Combustion",
+      "description": "Understanding rocket fuel, combustion processes, and efficiency.",
+      "course": "RS101",
+      "lessons": [
+        {
+          "_id": "L201",
+          "name": "Rocket Fuel",
+          "description": "Overview of different types of rocket fuels.",
+          "module": "M102"
+        },
+        {
+          "_id": "L202",
+          "name": "Combustion Processes",
+          "description": "Understanding combustion processes and efficiency.",
+          "module": "M102"
+        },
+        {
+          "_id": "L203",
+          "name": "Combustion Instability",
+          "description": "Understanding combustion instability and mitigation.",
+          "module": "M102"
+        }
+      ]
+    },
+    {
+      "_id": "M103",
+      "name": "Nozzle Design",
+      "description": "Principles of rocket nozzle design and performance optimization.",
+      "course": "RS101",
+      "lessons": [
+        {
+          "_id": "L301",
+          "name": "Nozzle Design",
+          "description": "Overview of different types of rocket nozzles.",
+          "module": "M103"
+        },
+        {
+          "_id": "L302",
+          "name": "Nozzle Performance",
+          "description": "Understanding nozzle performance and efficiency.",
+          "module": "M103"
+        },
+        {
+          "_id": "L303",
+          "name": "Nozzle Optimization",
+          "description": "Optimizing nozzle design for specific applications.",
+          "module": "M103"
+        }
+      ]
+    },
+    {
+      "_id": "M201",
+      "name": "Fundamentals of Aerodynamics",
+      "description": "Basic aerodynamic concepts and fluid dynamics principles.",
+      "course": "RS102"
+    },
+    {
+      "_id": "M202",
+      "name": "Subsonic and Supersonic Flow",
+      "description": "Understanding subsonic and supersonic aerodynamic behaviors.",
+      "course": "RS102"
+    },
+    {
+      "_id": "M203",
+      "name": "Aerodynamic Heating",
+      "description": "Study of aerodynamic heating and thermal protection systems.",
+      "course": "RS102"
+    },
+    {
+      "_id": "M301",
+      "name": "Spacecraft Structural Design",
+      "description": "Fundamentals of designing spacecraft structures and materials selection.",
+      "course": "RS103"
+    },
+    {
+      "_id": "M302",
+      "name": "Orbital Mechanics",
+      "description": "Understanding orbital dynamics and mission planning.",
+      "course": "RS103"
+    },
+    {
+      "_id": "M303",
+      "name": "Spacecraft Systems Engineering",
+      "description": "Overview of spacecraft systems and subsystems engineering.",
+      "course": "RS103"
+    },
+    {
+      "_id": "M401",
+      "name": "Fundamentals of Organic Chemistry",
+      "description": "Introduction to the structure, bonding, and properties of organic molecules.",
+      "course": "RS104",
+      "lessons": [
+        {
+          "_id": "L401",
+          "name": "Atomic Structure and Bonding",
+          "description": "Review of atomic orbitals, covalent bonding, and hybridization in organic molecules.",
+          "module": "M401"
+        },
+        {
+          "_id": "L402",
+          "name": "Functional Groups Overview",
+          "description": "Classification and properties of key organic functional groups.",
+          "module": "M401"
+        },
+        {
+          "_id": "L403",
+          "name": "Isomerism and Molecular Representation",
+          "description": "Understanding structural, geometric, and optical isomerism.",
+          "module": "M401"
+        }
+      ]
+    },
+    {
+      "_id": "M402",
+      "name": "Organic Reaction Mechanisms",
+      "description": "Detailed exploration of common organic reaction types and mechanisms.",
+      "course": "RS104",
+      "lessons": [
+        {
+          "_id": "L404",
+          "name": "Substitution and Elimination Reactions",
+          "description": "Understanding SN1, SN2, E1, and E2 mechanisms.",
+          "module": "M402"
+        },
+        {
+          "_id": "L405",
+          "name": "Addition and Oxidation Reactions",
+          "description": "Mechanisms of addition to alkenes and oxidation of alcohols.",
+          "module": "M402"
+        },
+        {
+          "_id": "L406",
+          "name": "Reaction Energy Diagrams",
+          "description": "Visualizing intermediates, transition states, and activation energy.",
+          "module": "M402"
+        }
+      ]
+    },
+    {
+      "_id": "M403",
+      "name": "Spectroscopy and Structure Determination",
+      "description": "Techniques for determining molecular structure using spectroscopy.",
+      "course": "RS104",
+      "lessons": [
+        {
+          "_id": "L407",
+          "name": "Infrared Spectroscopy",
+          "description": "Principles of IR absorption and interpretation of spectra.",
+          "module": "M403"
+        },
+        {
+          "_id": "L408",
+          "name": "NMR Spectroscopy",
+          "description": "Introduction to proton and carbon-13 NMR.",
+          "module": "M403"
+        },
+        {
+          "_id": "L409",
+          "name": "Mass Spectrometry",
+          "description": "Determining molecular mass and fragmentation patterns.",
+          "module": "M403"
+        }
+      ]
+    },
+    {
+      "_id": "M501",
+      "name": "Coordination Chemistry",
+      "description": "Exploration of metal-ligand bonding and coordination compounds.",
+      "course": "RS105",
+      "lessons": [
+        {
+          "_id": "L501",
+          "name": "Bonding Theories",
+          "description": "Crystal field and ligand field theories applied to metal complexes.",
+          "module": "M501"
+        },
+        {
+          "_id": "L502",
+          "name": "Coordination Number and Geometry",
+          "description": "Common geometries and factors affecting structure.",
+          "module": "M501"
+        },
+        {
+          "_id": "L503",
+          "name": "Isomerism in Coordination Compounds",
+          "description": "Structural and optical isomerism in metal complexes.",
+          "module": "M501"
+        }
+      ]
+    },
+    {
+      "_id": "M502",
+      "name": "Bioinorganic Chemistry",
+      "description": "Study of metal ions in biological systems and their functions.",
+      "course": "RS105",
+      "lessons": [
+        {
+          "_id": "L504",
+          "name": "Metalloenzymes",
+          "description": "Role of metal ions in catalysis and enzymatic activity.",
+          "module": "M502"
+        },
+        {
+          "_id": "L505",
+          "name": "Oxygen Transport and Storage",
+          "description": "Understanding hemoglobin, myoglobin, and related systems.",
+          "module": "M502"
+        },
+        {
+          "_id": "L506",
+          "name": "Metal Toxicity and Homeostasis",
+          "description": "Balancing essential and toxic metal levels in organisms.",
+          "module": "M502"
+        }
+      ]
+    },
+    {
+      "_id": "M601",
+      "name": "Thermodynamics in Chemistry",
+      "description": "Fundamentals of energy, work, and heat in chemical systems.",
+      "course": "RS106",
+      "lessons": [
+        {
+          "_id": "L601",
+          "name": "Laws of Thermodynamics",
+          "description": "Understanding the zeroth, first, and second laws.",
+          "module": "M601"
+        },
+        {
+          "_id": "L602",
+          "name": "Gibbs Free Energy",
+          "description": "Relationship between energy, spontaneity, and equilibrium.",
+          "module": "M601"
+        },
+        {
+          "_id": "L603",
+          "name": "Phase Equilibria",
+          "description": "Phase diagrams and Clapeyron equations.",
+          "module": "M601"
+        }
+      ]
+    },
+    {
+      "_id": "M602",
+      "name": "Chemical Kinetics",
+      "description": "Rates of reactions and factors influencing reaction speed.",
+      "course": "RS106",
+      "lessons": [
+        {
+          "_id": "L604",
+          "name": "Rate Laws and Reaction Order",
+          "description": "Empirical determination of rate equations.",
+          "module": "M602"
+        },
+        {
+          "_id": "L605",
+          "name": "Temperature Dependence and Catalysis",
+          "description": "Arrhenius equation and catalytic mechanisms.",
+          "module": "M602"
+        },
+        {
+          "_id": "L606",
+          "name": "Complex Reactions",
+          "description": "Steady-state approximation and reaction mechanisms.",
+          "module": "M602"
+        }
+      ]
+    },
+    {
+      "_id": "M603",
+      "name": "Quantum Chemistry",
+      "description": "Application of quantum mechanics to chemical systems.",
+      "course": "RS106",
+      "lessons": [
+        {
+          "_id": "L607",
+          "name": "Particle in a Box",
+          "description": "Model systems for understanding quantization of energy.",
+          "module": "M603"
+        },
+        {
+          "_id": "L608",
+          "name": "The Hydrogen Atom",
+          "description": "Quantum numbers and atomic orbitals.",
+          "module": "M603"
+        },
+        {
+          "_id": "L609",
+          "name": "Molecular Orbital Theory",
+          "description": "Bonding and antibonding orbitals in molecules.",
+          "module": "M603"
+        }
+      ]
+    },
+    {
+      "_id": "M701",
+      "name": "Elvish Linguistics: Sindarin and Quenya",
+      "description": "Study of the structure, phonology, and grammar of Elvish languages.",
+      "course": "RS107",
+      "lessons": [
+        {
+          "_id": "L701",
+          "name": "Phonetics and Pronunciation",
+          "description": "Sound systems of Sindarin and Quenya.",
+          "module": "M701"
+        },
+        {
+          "_id": "L702",
+          "name": "Grammar and Syntax",
+          "description": "Sentence structure and morphological patterns.",
+          "module": "M701"
+        },
+        {
+          "_id": "L703",
+          "name": "Translation Workshop",
+          "description": "Translating inscriptions and songs from Elvish texts.",
+          "module": "M701"
+        }
+      ]
+    },
+    {
+      "_id": "M702",
+      "name": "Scripts and Writing Systems of Middle-earth",
+      "description": "Exploration of Tengwar, Cirth, and other writing systems used in Middle-earth.",
+      "course": "RS107",
+      "lessons": [
+        {
+          "_id": "L704",
+          "name": "Tengwar Script",
+          "description": "Alphabet, modes, and usage in different regions.",
+          "module": "M702"
+        },
+        {
+          "_id": "L705",
+          "name": "Cirth Runes",
+          "description": "Origins, structure, and applications of Dwarvish runes.",
+          "module": "M702"
+        },
+        {
+          "_id": "L706",
+          "name": "The Black Speech",
+          "description": "Structure and limited usage of the language of Mordor.",
+          "module": "M702"
+        }
+      ]
+    },
+    {
+      "_id": "M801",
+      "name": "Diplomatic History of Middle-earth",
+      "description": "Study of key historical events shaping inter-species relations.",
+      "course": "RS108",
+      "lessons": [
+        {
+          "_id": "L801",
+          "name": "The Council of Elrond",
+          "description": "Analysis of the pivotal meeting that shaped the Fellowship's journey.",
+          "module": "M801"
+        },
+        {
+          "_id": "L802",
+          "name": "The Last Alliance",
+          "description": "Formation and downfall of the alliance between Elves and Men.",
+          "module": "M801"
+        },
+        {
+          "_id": "L803",
+          "name": "The War of the Ring",
+          "description": "Political and military dynamics of Middle-earth's greatest conflict.",
+          "module": "M801"
+        }
+      ]
+    },
+    {
+      "_id": "M802",
+      "name": "Principles of Inter-species Diplomacy",
+      "description": "Exploration of negotiation, conflict resolution, and leadership across races.",
+      "course": "RS108",
+      "lessons": [
+        {
+          "_id": "L804",
+          "name": "Cultural Intelligence and Empathy",
+          "description": "Understanding diversity and cooperation among Middle-earth's peoples.",
+          "module": "M802"
+        },
+        {
+          "_id": "L805",
+          "name": "Ethics and Power Dynamics",
+          "description": "Moral challenges in cross-species governance and diplomacy.",
+          "module": "M802"
+        },
+        {
+          "_id": "L806",
+          "name": "Case Studies in Diplomacy",
+          "description": "Analysis of notable peace treaties and alliances.",
+          "module": "M802"
+        }
+      ]
+    }
+  ]
+
+

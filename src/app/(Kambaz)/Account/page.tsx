@@ -1,11 +1,5 @@
-import AccountNavigation from "./Navigation";
+import { redirect } from 'next/navigation';
 
 export default function AccountPage() {
-  return (
-    <div className="d-flex">
-      <AccountNavigation />
-      <div className="flex-fill">
-      </div>
-    </div>
-  );
+  redirect('/Account/Signin');
 }

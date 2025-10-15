@@ -96,9 +96,10 @@
 /* Main content area */
 .main-content {
   margin-left: 100px;
-  padding: 20px;
+  padding: 20px 0 20px 20px;
   min-height: 100vh;
   background-color: #ffffff;
+  overflow-x: hidden;
 }
 
 /* Account main content with reduced spacing */
@@ -114,6 +115,10 @@
   max-width: 200px;
   margin-right: 0px;
   flex-shrink: 0;
+  position: relative;
+  z-index: 999;
+  display: block !important;
+  visibility: visible !important;
 }
 
 #wd-account .flex-fill {
@@ -127,6 +132,8 @@
   background-color: transparent;
   color: #dc3545;
   padding: 10px 15px;
+  display: block !important;
+  visibility: visible !important;
 }
 
 #wd-account-navigation {
@@ -342,5 +349,20 @@
 
 #wd-assignments-editor input[type="datetime-local"] {
   background-image: none !important;
+}
+
+/* Dashboard Full-Width Fix */
+#wd-dashboard {
+  margin-left: 100px; /* space for sidebar */
+  margin-right: 0;
+  padding-left: 20px;    /* remove Container default padding */
+  padding-right: 20px;
+  width: calc(100% - 100px); /* full width minus sidebar */
+  overflow-x: hidden;
+}
+
+#wd-dashboard .row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }
 
