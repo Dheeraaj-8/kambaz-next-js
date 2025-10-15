@@ -214,6 +214,12 @@
   background-color: #ffffff !important;
 }
 
+@media (max-width: 768px) {
+  .wd-left-sidebar {
+    display: none;
+  }
+}
+
 /* Assignments styles */
 #wd-assignments {
   width: 100%;
@@ -221,6 +227,25 @@
   display: block;
   box-sizing: border-box;
 }
+
+#wd-assignments .assignment-list {
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+#wd-assignments .assignment-item {
+  border-bottom: 1px solid #dee2e6;
+}
+
+#wd-assignments .assignment-item:last-child {
+  border-bottom: none;
+}
+
+#wd-assignments .assignment-subtitle {
+  font-size: 0.85rem;
+}
+
 
 /* Top Bar: Search and Buttons */
 .assignments-top-bar {

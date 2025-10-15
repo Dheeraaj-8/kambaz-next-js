@@ -27,7 +27,9 @@ export default function KambazNavigation() {
       >
         {/* NEU Logo */}
         <ListGroupItem className="bg-dark border-0 text-center" id="wd-neu-logo">
-          <Image src="/images/NEU.png" width={75} height={75} alt="Northeastern University" />
+          <Link href="https://www.northeastern.edu/" target="_blank" rel="noopener noreferrer">
+            <Image src="/images/NEU.png" width={75} height={75} alt="Northeastern University" />
+          </Link>
         </ListGroupItem>
 
         {/* Navigation Links */}
@@ -35,13 +37,16 @@ export default function KambazNavigation() {
           const IconComponent = link.icon;
           const isActive = pathname === link.path;
           return (
-            <ListGroupItem key={link.path} className="border-0 bg-dark text-center">
+            <ListGroupItem 
+              key={link.path} 
+              className={`border-0 text-center ${isActive ? 'bg-white' : 'bg-dark'}`}
+            >
               <Link 
                 href={link.path} 
                 id={link.id} 
-                className={`nav-link-custom ${isActive ? 'active' : ''}`}
+                className={`nav-link-custom ${isActive ? 'active text-danger' : 'text-white'}`}
               >
-                <IconComponent className="fs-1" />
+                <IconComponent className="fs-1 text-danger" />
                 {link.label}
               </Link>
             </ListGroupItem>
