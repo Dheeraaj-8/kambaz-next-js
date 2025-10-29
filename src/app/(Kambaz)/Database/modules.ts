@@ -8,6 +8,7 @@ export interface Lesson {
 }
 
 export interface Module {
+  [x: string]: any;
   _id: string;
   name: string;
   description: string;

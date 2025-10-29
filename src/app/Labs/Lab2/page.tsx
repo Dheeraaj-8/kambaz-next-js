@@ -19,6 +19,7 @@ import BootstrapLists from "./BootstrapLists";
 import BootstrapForms from "./BootstrapForms";
 import BootstrapNavigation from "./BootstrapNavigation";
 import TOC from "./TOC";
+import Margin from "./Margins";
 export default function Lab2() {
     return (
         <Container>
@@ -85,6 +86,7 @@ export default function Lab2() {
             </div>
             <Borders />
             <Padding />
+            <Margin />
             <Corners />
             <Dimensions />
             <Positions />

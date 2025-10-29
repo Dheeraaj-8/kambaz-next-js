@@ -44,9 +44,9 @@ export default function KambazNavigation() {
               <Link 
                 href={link.path} 
                 id={link.id} 
-                className={`nav-link-custom ${isActive ? 'active text-danger' : 'text-white'}`}
+                className="nav-link-custom"
               >
-                <IconComponent className="fs-1 text-danger" />
+                <IconComponent className="fs-1" />
                 {link.label}
               </Link>
             </ListGroupItem>

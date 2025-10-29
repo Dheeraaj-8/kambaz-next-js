@@ -3,3 +3,85 @@ body {
   color: #171717;
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Todo List Styling */
+#wd-todo-list-redux {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+#wd-todo-list-redux h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+#wd-todo-list-redux .list-group-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 15px;
+  border: 1px solid #dee2e6;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+
+#wd-todo-list-redux .btn {
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+#wd-add-todo-click {
+  background-color: #28a745;
+  color: white;
+}
+
+#wd-add-todo-click:hover {
+  background-color: #218838;
+}
+
+#wd-update-todo-click {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+#wd-update-todo-click:hover {
+  background-color: #e0a800;
+}
+
+#wd-delete-todo-click {
+  background-color: #dc3545;
+  color: white;
+}
+
+#wd-delete-todo-click:hover {
+  background-color: #c82333;
+}
+
+#wd-set-todo-click {
+  background-color: #007bff;
+  color: white;
+}
+
+#wd-set-todo-click:hover {
+  background-color: #0056b3;
+}
+
+#wd-todo-list-redux .form-control {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+#wd-todo-list-redux .form-control:focus {
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}

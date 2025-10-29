@@ -1,10 +1,26 @@
 "use client";
-
+import { useState } from "react";
+import ModuleEditor from "./ModuleEditor";
 import GreenCheckmark from "./GreenCheckmark";
 import { FaCheckCircle, FaTimes } from "react-icons/fa";
 import { Button, Dropdown } from "react-bootstrap";
 
-export default function ModulesControls() {
+interface ModulesControlsProps {
+  moduleName: string;
+  setModuleName: (title: string) => void;
+  addModule: () => void;
+}
+
+export default function ModulesControls({
+  moduleName,
+  setModuleName,
+  addModule,
+}: ModulesControlsProps) {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   return (
     <div className="d-flex justify-content-end mb-3">
       <div className="d-flex gap-1">
@@ -66,10 +82,22 @@ export default function ModulesControls() {
           </Dropdown.Menu>
         </Dropdown>
 
-        <button className="btn btn-danger btn-sm d-flex align-items-center">
+        <button
+          className="btn btn-danger btn-sm d-flex align-items-center"
+          onClick={handleShow}
+        >
           <span className="me-1">+</span>
           Module
         </button>
+
+        <ModuleEditor
+          show={show}
+          handleClose={handleClose}
+          dialogTitle="Add Module"
+          moduleName={moduleName}
+          setModuleName={setModuleName}
+          addModule={addModule}
+        />
       </div>
     </div>
   );

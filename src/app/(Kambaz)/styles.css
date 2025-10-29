@@ -32,7 +32,7 @@
 }
 
 .nav-link-custom {
-  color: white; /* White text for all items */
+  color: #ffffff; /* White text for inactive items */
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 500;
@@ -43,38 +43,41 @@
 }
 
 .nav-link-custom .fs-1 {
-  color: #e63946; /* Red color for all icons */
+  color: #ff0000; /* Red color for inactive icons */
   font-size: 1.8rem;
 }
 
-/* Account icon - grey color */
-#wd-account-link .fs-1 {
-  color: #6c757d !important; /* Grey color for Account icon */
+/* Account icon - white color when inactive */
+.kambaz-nav .list-group-item:not(.bg-white) #wd-account-link .fs-1 {
+  color: #ffffff !important; /* White color for Account icon when inactive */
 }
 
-/* Hover effect */
-.nav-link-custom:hover {
-  color: white;
+/* Hover effect for inactive items */
+.kambaz-nav .list-group-item:not(.bg-white) .nav-link-custom:hover {
+  color: #ffffff;
 }
-.nav-link-custom:hover .fs-1 {
-  color: #e63946;
+.kambaz-nav .list-group-item:not(.bg-white) .nav-link-custom:hover .fs-1 {
+  color: #ff0000;
+}
+
+/* Account icon hover - keep white */
+.kambaz-nav .list-group-item:not(.bg-white) #wd-account-link:hover .fs-1 {
+  color: #ffffff !important;
 }
 
 /* Active link - white background with red icon and red text */
-.active-link {
-  background-color: white !important;
-  border-radius: 0;
-  margin: 0;
-  padding: 15px 0 !important;
+.kambaz-nav .list-group-item.bg-white {
+  background-color: #ffffff !important;
+  border-radius: 0 !important;
 }
 
-.active-link .nav-link-custom {
-  color: #e63946 !important; /* Red text for active */
+.kambaz-nav .list-group-item.bg-white .nav-link-custom {
+  color: #ff0000 !important; /* Red text for active */
   font-weight: 600;
 }
 
-.active-link .nav-link-custom .fs-1 {
-  color: #e63946 !important; /* Red icon for active */
+.kambaz-nav .list-group-item.bg-white .nav-link-custom .fs-1 {
+  color: #ff0000 !important; /* Red icon for active */
 }
 
 /* Logo styling */
@@ -127,42 +130,34 @@
   width: 100%;
 }
 
-#wd-account-navigation .list-group-item {
-  border: none !important;
-  background-color: transparent;
-  color: #dc3545;
-  padding: 10px 15px;
-  display: block !important;
-  visibility: visible !important;
-}
-
 #wd-account-navigation {
-  background-color: transparent !important;
-  border: none !important;
+  background-color: white;
+  width: 180px;
+  padding: 0;
 }
 
-#wd-account-navigation.list-group {
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-#wd-account-navigation .list-group-item.active {
-  background-color: transparent !important;
-  color: #000000 !important;
-  font-weight: 600;
-  border-left: 3px solid #000000 !important;
+#wd-account-navigation .list-group-item {
+  border: none;
+  border-radius: 0;
+  padding: 8px 12px;
+  font-size: 1.1rem;
+  color: #dc3545; /* Bootstrap danger red */
+  background-color: transparent;
+  transition: all 0.2s ease-in-out;
 }
 
 #wd-account-navigation .list-group-item:hover {
-  background-color: #f8f9fa;
-  color: #dc3545;
+  color: #a30000;
+  text-decoration: none;
 }
 
-#wd-account-navigation .list-group-item.active:hover {
+/* Active link style */
+#wd-account-navigation .list-group-item.active,
+#wd-account-navigation .list-group-item[style*="border-left"] {
+  font-weight: 600;
+  color: black !important;
+  border-left: 3px solid black !important;
   background-color: transparent !important;
-  color: #000000 !important;
-  border-left: 3px solid #000000 !important;
 }
 
 /* Course navigation styles */
