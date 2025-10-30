@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = 'force-dynamic';
 import { Provider, useSelector } from "react-redux";
 import store from "../../store";
 export default function HelloRedux() {

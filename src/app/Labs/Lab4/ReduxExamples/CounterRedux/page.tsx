@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = 'force-dynamic';
 import { Provider, useSelector, useDispatch } from "react-redux";
 import { increment, decrement } from "./counterReducer";
 import store from "../../store";
