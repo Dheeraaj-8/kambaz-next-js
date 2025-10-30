@@ -4,7 +4,6 @@ import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addAssignment, updateAssignment } from "../reducer";
-import { setCurrentUser } from "../../../../Account/reducer";
 
 export default function AssignmentEditor() {
   const { cid, aid } = useParams();
@@ -23,34 +22,18 @@ export default function AssignmentEditor() {
   const [availableFrom, setAvailableFrom] = useState("");
   const [availableUntil, setAvailableUntil] = useState("");
 
-  const [loading, setLoading] = useState(true);
-  
   const isFacultyOrAdmin = currentUser?.role === "FACULTY" || currentUser?.role === "ADMIN";
   const isStudent = currentUser?.role === "STUDENT";
 
-  // Load from localStorage first
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const storedUser = localStorage.getItem('currentUser');
-      if (storedUser) {
-        dispatch(setCurrentUser(JSON.parse(storedUser)));
-      }
+    if (!currentUser) {
+      router.push("/Account/Signin");
+      return;
     }
-    setLoading(false);
-  }, [dispatch]);
-
-  // Then check permissions and redirect if needed
-  useEffect(() => {
-    if (!loading) {
-      if (!currentUser) {
-        router.push("/Account/Signin");
-        return;
-      }
-      if (isNew && !isFacultyOrAdmin) {
-        router.push(`/Courses/${cid}/Assignments`);
-      }
+    if (isNew && !isFacultyOrAdmin) {
+      router.push(`/Courses/${cid}/Assignments`);
     }
-  }, [currentUser, isNew, isFacultyOrAdmin, router, cid, loading]);
+  }, [currentUser, isNew, isFacultyOrAdmin, router, cid]);
 
   useEffect(() => {
     if (existingAssignment) {
@@ -82,9 +65,9 @@ export default function AssignmentEditor() {
     router.push(`/Courses/${cid}/Assignments`);
   };
 
-  if (loading || !currentUser) return null;
+  if (!currentUser) return null;
 
-  if (!loading && !isNew && !existingAssignment) {
+  if (!isNew && !existingAssignment) {
     return (
       <Container className="mt-3">
         <div className="alert alert-warning">Assignment not found.</div>
@@ -96,7 +79,7 @@ export default function AssignmentEditor() {
   }
 
   // STUDENT READ-ONLY VIEW
-  if (!loading && isStudent && !isNew) {
+  if (isStudent && !isNew) {
     return (
       <Container className="mt-3">
         <Card>

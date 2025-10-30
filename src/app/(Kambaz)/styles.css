@@ -112,6 +112,12 @@
   background-color: #ffffff;
 }
 
+/* Account Navigation Active State */
+.account-nav-active {
+  border-left: 3px solid #000000 !important;
+  color: #000000 !important;
+  font-weight: 600 !important;
+}
 /* Account navigation styles */
 #wd-account-navigation {
   min-width: 200px;
