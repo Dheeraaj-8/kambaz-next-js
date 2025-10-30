@@ -1,5 +1,4 @@
 "use client"
-import { StringDecoder } from "node:string_decoder";
 import BooleanStateVariables from "./BooleanStateVariables";
 import ClickEvent from "./ClickEvent";
 import Counter from "./Counter";

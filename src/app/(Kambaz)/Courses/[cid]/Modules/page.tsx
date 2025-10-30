@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useParams } from "next/navigation";
-import { Module, Lesson } from "@/app/(Kambaz)/Database/modules";
+import { Lesson } from "@/app/(Kambaz)/Database/modules";
 import { ListGroup, ListGroupItem, FormControl } from "react-bootstrap";
 import { BsGripVertical } from "react-icons/bs";
 import ModuleControlButtons from "./ModulesControlButtons";
