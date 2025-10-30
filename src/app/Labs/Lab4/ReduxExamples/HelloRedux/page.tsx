@@ -1,15 +1,16 @@
-"use client";
-export const dynamic = 'force-dynamic';
-import { Provider, useSelector } from "react-redux";
-import store from "../../store";
+"use client"; 
+
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
+
 export default function HelloRedux() {
-  const { message } = useSelector((state: any) => state.helloReducer);
+  const { message } = useSelector((state: RootState) => state.helloReducer);
+  
   return (
-    <Provider store={store}>
     <div id="wd-hello-redux">
       <h3>Hello Redux</h3>
-      <h4>{message}</h4> <hr />
+      <h4>{message}</h4>
+      <hr />
     </div>
-    </Provider>
   );
 }

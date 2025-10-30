@@ -1,26 +1,41 @@
 "use client";
-export const dynamic = 'force-dynamic';
+
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import { add } from "./addReducer";
-import { FormControl, Button } from "react-bootstrap";
+import { Button, FormControl } from "react-bootstrap";
+import { RootState } from "../../store";
 
 export default function AddRedux() {
   const [a, setA] = useState(12);
   const [b, setB] = useState(23);
-  const { sum } = useSelector((state: any) => state.addReducer);
+  const { sum } = useSelector((state: RootState) => state.addReducer);
   const dispatch = useDispatch();
   
   return (
     <div className="w-25" id="wd-add-redux">
       <h1>Add Redux</h1>
       <h2>{a} + {b} = {sum}</h2>
-      <FormControl type="number" defaultValue={a}
-        onChange={(e) => setA(parseInt(e.target.value))} />
-      <FormControl type="number" defaultValue={b}
-        onChange={(e) => setB(parseInt(e.target.value))} />
-      <Button id="wd-add-redux-click"
-              onClick={() => dispatch(add({ a, b }))}>
+      <FormControl 
+        type="number" 
+        value={a}
+        onChange={(e) => {
+          const value = e.target.value;
+          setA(value === "" ? 0 : parseInt(value));
+        }} 
+      />
+      <FormControl 
+        type="number" 
+        value={b}
+        onChange={(e) => {
+          const value = e.target.value;
+          setB(value === "" ? 0 : parseInt(value));
+        }} 
+      />
+      <Button 
+        id="wd-add-redux-click"
+        onClick={() => dispatch(add({ a, b }))}
+      >
         Add Redux
       </Button>
       <hr/>
