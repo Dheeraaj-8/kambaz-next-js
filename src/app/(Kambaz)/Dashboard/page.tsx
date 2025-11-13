@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import * as client from "../Courses/client";
 import * as enrollmentsClient from "../Account/enrollmentsClient";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewCourse, deleteCourse, updateCourse, setCourses } from "../Courses/reducer";
+import { setCourses } from "../Courses/reducer";
 import { enrollCourse, unenrollCourse, setEnrollments } from "../Account/enrollmentsReducer";
 import {
   Row,
