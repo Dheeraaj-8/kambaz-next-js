@@ -117,7 +117,6 @@ export default function Dashboard() {
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
       
-      {/* Course Management - Only show when NOT showing all courses */}
       {!showAllCourses && currentUser?.role === "FACULTY" && (
         <>
           <h5>New Course
@@ -171,9 +170,7 @@ export default function Dashboard() {
                       {c.description}
                     </CardText>
                     
-                    {/* Show different buttons based on view mode */}
                     {showAllCourses ? (
-                      // Enrollment view - show Enroll/Unenroll buttons
                       <>
                         <Button variant="primary"> Go </Button>
                         {isEnrolled(c._id) ? (
@@ -199,7 +196,6 @@ export default function Dashboard() {
                         )}
                       </>
                     ) : (
-                      // Regular view - show Go and management buttons
                       <>
                         <Button variant="primary"> Go </Button>
                         {currentUser?.role === "FACULTY" && (
