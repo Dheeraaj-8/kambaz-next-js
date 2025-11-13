@@ -1,4 +1,3 @@
-"use client"
 import { useState } from "react";
 import { FormControl } from "react-bootstrap";
 export default function ObjectStateVariable() {

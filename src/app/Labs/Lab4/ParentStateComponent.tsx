@@ -1,4 +1,3 @@
-"use client"
 import { useState } from "react";
 import ChildStateComponent from "./ChildStateComponent";
 export default function ParentStateComponent() {
@@ -12,4 +11,3 @@ export default function ParentStateComponent() {
       <hr/>
     </div>
 );}
-

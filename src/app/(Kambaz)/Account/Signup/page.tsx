@@ -1,136 +1,65 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { setCurrentUser } from "../reducer";
+import { useDispatch } from "react-redux";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setCurrentUser, addUser } from "../reducer";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
+import * as client from "../client";
 
 export default function Signup() {
-  const [credentials, setCredentials] = useState({
-    username: "",
-    password: "",
-    verifyPassword: "",
-  });
+  const [user, setUser] = useState<any>({});
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const router = useRouter();
-  const { users } = useSelector((state: any) => state.accountReducer);
 
-  const signup = () => {
-    setError("");
-
-    // Validation
-    if (!credentials.username || !credentials.password || !credentials.verifyPassword) {
-      setError("All fields are required");
-      return;
+  const signup = async () => {
+    try {
+      setError("");
+      const currentUser = await client.signup(user);
+      dispatch(setCurrentUser(currentUser));
+      router.push("/Account/Profile");
+    } catch (err: any) {
+      setError(err.message || "Signup failed");
     }
-
-    if (credentials.password !== credentials.verifyPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-
-    // Check if username already exists
-    const existingUser = users.find(
-      (u: any) => u.username === credentials.username
-    );
-    
-    if (existingUser) {
-      setError("Username already exists");
-      return;
-    }
-
-    // Create new user
-    const newUser = {
-      _id: new Date().getTime().toString(),
-      username: credentials.username,
-      password: credentials.password,
-      firstName: "",
-      lastName: "",
-      email: "",
-      dob: "",
-      role: "STUDENT",
-      loginId: "",
-      section: "",
-      lastActivity: new Date().toISOString().split('T')[0],
-      totalActivity: "00:00:00"
-    };
-
-    // Add user to Redux store (and localStorage via reducer)
-    dispatch(addUser(newUser));
-    
-    // Set as current user
-    dispatch(setCurrentUser(newUser));
-    
-    // Navigate to Dashboard
-    router.push("/Dashboard");
   };
 
   return (
-    <div className="p-4">
-      <div id="wd-signup-screen" style={{ maxWidth: "300px", width: "100%" }}>
-        <h3 className="fw-bold mb-3">Sign Up</h3>
-        
-        {error && (
-          <Alert variant="danger" className="py-2 px-3 small">
-            {error}
-          </Alert>
-        )}
-
-        <Form>
-          <Form.Control
-            placeholder="Username"
-            className="wd-username mb-2 p-2"
-            value={credentials.username}
-            onChange={(e) =>
-              setCredentials({ ...credentials, username: e.target.value })
-            }
-            autoComplete="off"
-            style={{ fontSize: "0.9rem" }}
-          />
-          <Form.Control
-            placeholder="Password"
-            type="password"
-            className="wd-password mb-2 p-2"
-            value={credentials.password}
-            onChange={(e) =>
-              setCredentials({ ...credentials, password: e.target.value })
-            }
-            autoComplete="new-password"
-            style={{ fontSize: "0.9rem" }}
-          />
-          <Form.Control
-            placeholder="Verify Password"
-            type="password"
-            className="wd-password-verify mb-3 p-2"
-            value={credentials.verifyPassword}
-            onChange={(e) =>
-              setCredentials({ ...credentials, verifyPassword: e.target.value })
-            }
-            autoComplete="new-password"
-            style={{ fontSize: "0.9rem" }}
-          />
-          <Button
-            variant="primary"
-            className="w-100 py-2 mb-2"
-            onClick={signup}
-            id="wd-signup-btn"
-            style={{ fontSize: "0.9rem" }}
-          >
-            Sign up
-          </Button>
-          <div className="text-center">
-            <Link
-              href="/Account/Signin"
-              id="wd-signin-link"
-              className="text-decoration-none small"
-            >
-              Sign in
-            </Link>
-          </div>
-        </Form>
-      </div>
+    <div id="wd-signup-screen" className="p-4" style={{ maxWidth: "400px" }}>
+      <h3>Sign up</h3>
+      {error && (
+        <div className="alert alert-danger" role="alert">
+          {error}
+        </div>
+      )}
+      <Form>
+        <Form.Control
+          value={user.username || ""}
+          onChange={(e) => setUser({ ...user, username: e.target.value })}
+          placeholder="username"
+          className="wd-username mb-2"
+          autoComplete="off"
+        />
+        <Form.Control
+          value={user.password || ""}
+          onChange={(e) => setUser({ ...user, password: e.target.value })}
+          placeholder="password"
+          type="password"
+          className="wd-password mb-2"
+          autoComplete="new-password"
+        />
+        <Button 
+          onClick={signup} 
+          variant="primary" 
+          className="wd-signup-btn w-100 mb-2"
+          id="wd-signup-btn"
+        >
+          Sign up
+        </Button>
+        <Link href="/Account/Signin" id="wd-signin-link">
+          Sign in
+        </Link>
+      </Form>
     </div>
   );
 }

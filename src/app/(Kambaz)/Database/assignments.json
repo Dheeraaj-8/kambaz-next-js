@@ -1,33 +1,26 @@
 [
-  { "_id": "RS101-A1", "title": "Organic Reactions Assignment", "course": "RS101" },
-  { "_id": "RS101-A2", "title": "Carbon Compounds Lab", "course": "RS101" },
-  { "_id": "RS101-A3", "title": "Spectroscopy Exercise", "course": "RS101" },
-
-  { "_id": "RS102-A1", "title": "Periodic Table Trends Quiz", "course": "RS102" },
-  { "_id": "RS102-A2", "title": "Coordination Chemistry Assignment", "course": "RS102" },
-  { "_id": "RS102-A3", "title": "Inorganic Synthesis Lab", "course": "RS102" },
-
-  { "_id": "RS103-A1", "title": "Thermodynamics Problem Set", "course": "RS103" },
-  { "_id": "RS103-A2", "title": "Kinetics Lab", "course": "RS103" },
-  { "_id": "RS103-A3", "title": "Quantum Mechanics Exercises", "course": "RS103" },
-
-  { "_id": "RS104-A1", "title": "Elvish Script Translation", "course": "RS104" },
-  { "_id": "RS104-A2", "title": "Dwarvish Inscription Analysis", "course": "RS104" },
-  { "_id": "RS104-A3", "title": "Black Speech Deciphering", "course": "RS104" },
-
-  { "_id": "RS105-A1", "title": "Council of Elrond Case Study", "course": "RS105" },
-  { "_id": "RS105-A2", "title": "Elves & Men Diplomacy Assignment", "course": "RS105" },
-  { "_id": "RS105-A3", "title": "Inter-species Conflict Analysis", "course": "RS105" },
-
-  { "_id": "RS106-A1", "title": "Organic Synthesis Planning", "course": "RS106" },
-  { "_id": "RS106-A2", "title": "Reaction Mechanisms Quiz", "course": "RS106" },
-  { "_id": "RS106-A3", "title": "Functional Group Analysis Lab", "course": "RS106" },
-
-  { "_id": "RS107-A1", "title": "Inorganic Reaction Prediction", "course": "RS107" },
-  { "_id": "RS107-A2", "title": "Crystal Field Theory Assignment", "course": "RS107" },
-  { "_id": "RS107-A3", "title": "Metal Complex Lab", "course": "RS107" },
-
-  { "_id": "RS108-A1", "title": "Physical Chemistry Lab Report", "course": "RS108" },
-  { "_id": "RS108-A2", "title": "Thermodynamics Problem Set", "course": "RS108" },
-  { "_id": "RS108-A3", "title": "Spectroscopy & Kinetics Quiz", "course": "RS108" }
+    { "_id": "A101", "title": "Propulsion Assignment", "course": "RS101" },
+    { "_id": "A102", "title": "Combustion Analysis", "course": "RS101" },
+    { "_id": "A103", "title": "Nozzle Design Project", "course": "RS101" },
+    { "_id": "A201", "title": "Aerodynamics Quiz", "course": "RS102" },
+    { "_id": "A202", "title": "Flow Analysis", "course": "RS102" },
+    { "_id": "A203", "title": "Heating Analysis", "course": "RS102" },
+    { "_id": "A301", "title": "Structural Design Task", "course": "RS103" },
+    { "_id": "A302", "title": "Orbital Calculations", "course": "RS103" },
+    { "_id": "A303", "title": "Systems Engineering Exam", "course": "RS103" },
+    { "_id": "A401", "title": "Organic Synthesis Lab", "course": "RS104" },
+    { "_id": "A402", "title": "Functional Groups Quiz", "course": "RS104" },
+    { "_id": "A403", "title": "Spectroscopy Analysis", "course": "RS104" },
+    { "_id": "A501", "title": "Coordination Compounds Lab", "course": "RS105" },
+    { "_id": "A502", "title": "Crystal Field Theory Assignment", "course": "RS105" },
+    { "_id": "A503", "title": "Bioinorganic Essay", "course": "RS105" },
+    { "_id": "A601", "title": "Thermodynamics Problem Set", "course": "RS106" },
+    { "_id": "A602", "title": "Kinetics Exam", "course": "RS106" },
+    { "_id": "A603", "title": "Quantum Chemistry Project", "course": "RS106" },
+    { "_id": "A701", "title": "Elvish Translation", "course": "RS107" },
+    { "_id": "A702", "title": "Dwarvish Runes Exercise", "course": "RS107" },
+    { "_id": "A703", "title": "Language Evolution Essay", "course": "RS107" },
+    { "_id": "A801", "title": "Council of Elrond Analysis", "course": "RS108" },
+    { "_id": "A802", "title": "Alliance History Paper", "course": "RS108" },
+    { "_id": "A803", "title": "Diplomacy Case Study", "course": "RS108" }
 ]

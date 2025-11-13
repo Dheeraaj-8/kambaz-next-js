@@ -1,222 +1,241 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { Form, Button, Row, Col, Card, Container } from "react-bootstrap";
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addAssignment, updateAssignment } from "../reducer";
+import { Form, Button, Row, Col } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { setAssignments } from "../reducer";
+import * as client from "../client";
 
 export default function AssignmentEditor() {
   const { cid, aid } = useParams();
   const router = useRouter();
   const dispatch = useDispatch();
-  const assignments = useSelector((state: any) => state.assignmentsReducer.assignments);
-  const { currentUser } = useSelector((state: any) => state.accountReducer);
-
-  const isNew = aid === "New";
-  const existingAssignment = !isNew ? assignments.find((a: any) => a._id === aid) : null;
-
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [points, setPoints] = useState(100);
-  const [dueDate, setDueDate] = useState("");
-  const [availableFrom, setAvailableFrom] = useState("");
-  const [availableUntil, setAvailableUntil] = useState("");
-
-  const isFacultyOrAdmin = currentUser?.role === "FACULTY" || currentUser?.role === "ADMIN";
-  const isStudent = currentUser?.role === "STUDENT";
+  const { assignments } = useSelector((state: any) => state.assignmentsReducer);
+  
+  const [assignment, setAssignment] = useState({
+    title: "",
+    description: "",
+    points: 100,
+    dueDate: "",
+    availableFromDate: "",
+    availableUntilDate: "",
+  });
 
   useEffect(() => {
-    if (!currentUser) {
-      router.push("/Account/Signin");
-      return;
+    if (aid !== "new") {
+      const existingAssignment = assignments.find((a: any) => a._id === aid);
+      if (existingAssignment) {
+        setAssignment(existingAssignment);
+      }
     }
-    if (isNew && !isFacultyOrAdmin) {
-      router.push(`/Courses/${cid}/Assignments`);
-    }
-  }, [currentUser, isNew, isFacultyOrAdmin, router, cid]);
+  }, [aid, assignments]);
 
-  useEffect(() => {
-    if (existingAssignment) {
-      setName(existingAssignment.title || "");
-      setDescription(existingAssignment.description || "");
-      setPoints(existingAssignment.points || 100);
-      setDueDate(existingAssignment.dueDate || "");
-      setAvailableFrom(existingAssignment.availableFromDate || "");
-      setAvailableUntil(existingAssignment.availableUntilDate || "");
-    }
-  }, [existingAssignment]);
-
-  const handleSave = () => {
-    const assignmentData = {
-      course: cid as string,
-      name,
-      description,
-      points,
-      dueDate,
-      availableFromDate: availableFrom,
-      availableUntilDate: availableUntil,
-    };
-
-    if (isNew) {
-      dispatch(addAssignment(assignmentData));
-    } else if (existingAssignment) {
-      dispatch(updateAssignment({ ...existingAssignment, title: name, ...assignmentData }));
+  const handleSave = async () => {
+    if (!cid || Array.isArray(cid)) return;
+    
+    if (aid === "new") {
+      // Create new assignment
+      const newAssignment = await client.createAssignment(cid, assignment);
+      dispatch(setAssignments([...assignments, newAssignment]));
+    } else {
+      // Update existing assignment
+      const updatedAssignment = await client.updateAssignment({ ...assignment, _id: aid });
+      dispatch(setAssignments(
+        assignments.map((a: any) => a._id === aid ? updatedAssignment : a)
+      ));
     }
     router.push(`/Courses/${cid}/Assignments`);
   };
 
-  if (!currentUser) return null;
+  const handleCancel = () => {
+    router.push(`/Courses/${cid}/Assignments`);
+  };
 
-  if (!isNew && !existingAssignment) {
-    return (
-      <Container className="mt-3">
-        <div className="alert alert-warning">Assignment not found.</div>
-        <Button variant="secondary" onClick={() => router.push(`/Courses/${cid}/Assignments`)}>
-          Back to Assignments
-        </Button>
-      </Container>
-    );
-  }
-
-  // STUDENT READ-ONLY VIEW
-  if (isStudent && !isNew) {
-    return (
-      <Container className="mt-3">
-        <Card>
-          <Card.Header className="bg-light">
-            <h4 className="mb-0">{existingAssignment?.title}</h4>
-          </Card.Header>
-          <Card.Body>
-            <div className="mb-4">
-              <h6 className="fw-bold">Description:</h6>
-              <p className="text-muted" style={{ whiteSpace: "pre-wrap" }}>
-                {existingAssignment?.description || "No description provided."}
-              </p>
-            </div>
-
-            <div className="mb-3">
-              <h6 className="fw-bold">Points:</h6>
-              <p>{existingAssignment?.points || 100}</p>
-            </div>
-
-            {existingAssignment?.dueDate && (
-              <div className="mb-3">
-                <h6 className="fw-bold">Due Date:</h6>
-                <p>{new Date(existingAssignment.dueDate).toLocaleString()}</p>
-              </div>
-            )}
-
-            {existingAssignment?.availableFromDate && (
-              <div className="mb-3">
-                <h6 className="fw-bold">Available From:</h6>
-                <p>{new Date(existingAssignment.availableFromDate).toLocaleString()}</p>
-              </div>
-            )}
-
-            {existingAssignment?.availableUntilDate && (
-              <div className="mb-3">
-                <h6 className="fw-bold">Available Until:</h6>
-                <p>{new Date(existingAssignment.availableUntilDate).toLocaleString()}</p>
-              </div>
-            )}
-
-            <hr />
-            <div className="mb-3">
-              <h6 className="fw-bold">Submission:</h6>
-              <p className="text-muted fst-italic">Submission functionality coming soon...</p>
-            </div>
-          </Card.Body>
-        </Card>
-
-        <div className="mt-3">
-          <Button variant="secondary" onClick={() => router.push(`/Courses/${cid}/Assignments`)}>
-            Back to Assignments
-          </Button>
-        </div>
-      </Container>
-    );
-  }
-
-  // FACULTY/ADMIN EDITABLE VIEW
   return (
-    <div id="wd-assignments-editor" className="container mt-3">
-      <div className="mb-3">
-        <Form.Label className="fw-bold">Assignment Name</Form.Label>
-        <Form.Control
-          type="text"
-          id="wd-name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Assignment Name"
-        />
-      </div>
-
-      <div className="mb-3">
-        <Form.Label className="fw-bold">Description</Form.Label>
-        <Form.Control
-          as="textarea"
-          rows={10}
-          id="wd-description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Assignment Description"
-        />
-      </div>
-
-      <div className="mb-3">
-        <Form.Label className="fw-bold">Points</Form.Label>
-        <Form.Control
-          type="number"
-          id="wd-points"
-          value={points}
-          onChange={(e) => setPoints(Number(e.target.value))}
-        />
-      </div>
-
-      <div className="border rounded p-3 mb-4">
-        <Form.Label className="fw-bold">Assign</Form.Label>
-
+    <div id="wd-assignments-editor" className="p-4">
+      <Form>
         <div className="mb-3">
-          <Form.Label className="fw-bold">Due</Form.Label>
+          <Form.Label htmlFor="wd-name">Assignment Name</Form.Label>
           <Form.Control
-            type="datetime-local"
-            id="wd-due-date"
-            value={dueDate}
-            onChange={(e) => setDueDate(e.target.value)}
+            id="wd-name"
+            type="text"
+            value={assignment.title}
+            onChange={(e) => setAssignment({ ...assignment, title: e.target.value })}
           />
         </div>
 
-        <Row>
-          <Col md={6}>
-            <Form.Label className="fw-bold">Available from</Form.Label>
+        <div className="mb-3">
+          <Form.Control
+            as="textarea"
+            rows={10}
+            id="wd-description"
+            value={assignment.description}
+            onChange={(e) => setAssignment({ ...assignment, description: e.target.value })}
+          />
+        </div>
+
+        <Row className="mb-3">
+          <Form.Label column sm={3} htmlFor="wd-points" className="text-end">
+            Points
+          </Form.Label>
+          <Col sm={9}>
             <Form.Control
-              type="datetime-local"
-              id="wd-available-from"
-              value={availableFrom}
-              onChange={(e) => setAvailableFrom(e.target.value)}
-            />
-          </Col>
-          <Col md={6}>
-            <Form.Label className="fw-bold">Until</Form.Label>
-            <Form.Control
-              type="datetime-local"
-              id="wd-available-until"
-              value={availableUntil}
-              onChange={(e) => setAvailableUntil(e.target.value)}
+              id="wd-points"
+              type="number"
+              value={assignment.points}
+              onChange={(e) => setAssignment({ ...assignment, points: parseInt(e.target.value) })}
             />
           </Col>
         </Row>
-      </div>
 
-      <hr />
-      <div className="d-flex justify-content-end gap-2">
-        <Button variant="secondary" onClick={() => router.push(`/Courses/${cid}/Assignments`)} id="wd-cancel-btn">
-          Cancel
-        </Button>
-        <Button variant="danger" onClick={handleSave} id="wd-save-btn">
-          Save
-        </Button>
-      </div>
+        <Row className="mb-3">
+          <Form.Label column sm={3} htmlFor="wd-group" className="text-end">
+            Assignment Group
+          </Form.Label>
+          <Col sm={9}>
+            <Form.Select id="wd-group" defaultValue="ASSIGNMENTS">
+              <option value="ASSIGNMENTS">ASSIGNMENTS</option>
+              <option value="ABC">ABC</option>
+              <option value="CWS">CWS</option>
+              <option value="BSA">BSA</option>
+            </Form.Select>
+          </Col>
+        </Row>
+
+        <Row className="mb-3">
+          <Form.Label column sm={3} htmlFor="wd-display-grade-as" className="text-end">
+            Display Grade as
+          </Form.Label>
+          <Col sm={9}>
+            <Form.Select id="wd-display-grade-as" defaultValue="Percentage">
+              <option value="Percentage">Percentage</option>
+              <option value="ABC">ABC</option>
+              <option value="CWS">CWS</option>
+              <option value="BSA">BSA</option>
+            </Form.Select>
+          </Col>
+        </Row>
+
+        <Row className="mb-3">
+          <Form.Label column sm={3} htmlFor="wd-submission-type" className="text-end">
+            Submission Type
+          </Form.Label>
+          <Col sm={9}>
+            <div className="border rounded p-3">
+              <Form.Select id="wd-submission-type" defaultValue="Online" className="mb-3">
+                <option value="Online">Online</option>
+                <option value="ABC">ABC</option>
+                <option value="CWS">CWS</option>
+                <option value="BSA">BSA</option>
+              </Form.Select>
+
+              <Form.Label className="fw-bold">Online Entry Options</Form.Label>
+              
+              <Form.Check
+                type="checkbox"
+                id="wd-text-entry"
+                label="Text Entry"
+                className="mb-2"
+              />
+              
+              <Form.Check
+                type="checkbox"
+                id="wd-website-url"
+                label="Website URL"
+                className="mb-2"
+              />
+              
+              <Form.Check
+                type="checkbox"
+                id="wd-media-recordings"
+                label="Media Recordings"
+                className="mb-2"
+              />
+              
+              <Form.Check
+                type="checkbox"
+                id="wd-student-annotation"
+                label="Student Annotation"
+                className="mb-2"
+              />
+              
+              <Form.Check
+                type="checkbox"
+                id="wd-file-upload"
+                label="File Uploads"
+              />
+            </div>
+          </Col>
+        </Row>
+
+        <Row className="mb-3">
+          <Form.Label column sm={3} className="text-end">
+            Assign
+          </Form.Label>
+          <Col sm={9}>
+            <div className="border rounded p-3">
+              <Form.Label htmlFor="wd-assign-to" className="fw-bold">
+                Assign to
+              </Form.Label>
+              <Form.Control
+                id="wd-assign-to"
+                type="text"
+                defaultValue="Everyone"
+                className="mb-3"
+              />
+
+              <Form.Label htmlFor="wd-due-date" className="fw-bold">
+                Due
+              </Form.Label>
+              <Form.Control
+                id="wd-due-date"
+                type="date"
+                value={assignment.dueDate}
+                onChange={(e) => setAssignment({ ...assignment, dueDate: e.target.value })}
+                className="mb-3"
+              />
+
+              <Row>
+                <Col md={6}>
+                  <Form.Label htmlFor="wd-available-from" className="fw-bold">
+                    Available from
+                  </Form.Label>
+                  <Form.Control
+                    id="wd-available-from"
+                    type="date"
+                    value={assignment.availableFromDate}
+                    onChange={(e) => setAssignment({ ...assignment, availableFromDate: e.target.value })}
+                  />
+                </Col>
+
+                <Col md={6}>
+                  <Form.Label htmlFor="wd-available-until" className="fw-bold">
+                    Until
+                  </Form.Label>
+                  <Form.Control
+                    id="wd-available-until"
+                    type="date"
+                    value={assignment.availableUntilDate}
+                    onChange={(e) => setAssignment({ ...assignment, availableUntilDate: e.target.value })}
+                  />
+                </Col>
+              </Row>
+            </div>
+          </Col>
+        </Row>
+
+        <hr />
+
+        <div className="d-flex justify-content-end">
+          <Button variant="secondary" className="me-2" onClick={handleCancel} id="wd-cancel-btn">
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={handleSave} id="wd-save-btn">
+            Save
+          </Button>
+        </div>
+      </Form>
     </div>
   );
 }

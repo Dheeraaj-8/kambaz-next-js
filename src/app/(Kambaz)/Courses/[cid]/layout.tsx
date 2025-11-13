@@ -1,45 +1,56 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import CourseNavigation from "./Navigation";
-import { useSelector } from "react-redux";
-import { useParams, useRouter } from "next/navigation";
 import Breadcrumb from "./Breadcrumb";
 import { FaAlignJustify } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { useParams, useRouter } from "next/navigation";
 
 export default function CoursesLayout({ children }: { children: ReactNode }) {
- const { cid } = useParams();
- const { courses } = useSelector((state: any) => state.coursesReducer);
- const enrollments = useSelector((state: any) => state.enrollmentsReducer.enrollments);
- const { currentUser } = useSelector((state: any) => state.accountReducer);
- const router = useRouter();
- const course = courses.find((course: any) => course._id === cid);
- const [sidebarVisible, setSidebarVisible] = useState(true);
+  const { cid } = useParams() as { cid: string };
+  const router = useRouter();
+  const { courses } = useSelector((state: any) => state.coursesReducer);
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const { enrollments } = useSelector((state: any) => state.enrollmentsReducer);
+  const course = courses.find((course: any) => course._id === cid);
+  const [showNavigation, setShowNavigation] = useState(true);
 
- useEffect(() => {
-  if (!currentUser) { return; }
-  const allowed = enrollments.some((e: any) => e.user === currentUser._id && e.course === cid);
-  if (!allowed) {
-    router.push("/Dashboard");
-  }
- }, [cid, currentUser, enrollments, router]);
+  const toggleNavigation = () => {
+    setShowNavigation(!showNavigation);
+  };
+
+  // Check if user is enrolled in the course
+  useEffect(() => {
+    if (currentUser) {
+      const isEnrolled = enrollments.some(
+        (enrollment: any) =>
+          enrollment.user === currentUser._id && enrollment.course === cid
+      );
+      
+      if (!isEnrolled) {
+        // User is not enrolled, redirect to Dashboard
+        router.push("/Dashboard");
+      }
+    }
+  }, [currentUser, enrollments, cid, router]);
 
   return (
-    <div id="wd-courses" className="main-content">
-      <h2 className="text-danger d-flex align-items-center">
+    <div id="wd-courses">
+      <h2 className="text-danger">
         <FaAlignJustify 
           className="me-4 fs-4 mb-1" 
-          style={{ cursor: 'pointer' }}
-          onClick={() => setSidebarVisible(!sidebarVisible)}
+          style={{ cursor: "pointer" }}
+          onClick={toggleNavigation}
         />
         <Breadcrumb course={course} />
       </h2>
+      
       <hr />
-
       <div className="d-flex">
-        {sidebarVisible && (
+        {showNavigation && (
           <div className="d-none d-md-block">
-            <CourseNavigation courseId={cid as string} />
+            <CourseNavigation cid={cid} />
           </div>
         )}
         <div className="flex-fill">
@@ -49,4 +60,3 @@ export default function CoursesLayout({ children }: { children: ReactNode }) {
     </div>
   );
 }
-

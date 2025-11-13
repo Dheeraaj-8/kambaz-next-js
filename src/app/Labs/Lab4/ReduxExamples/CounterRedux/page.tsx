@@ -25,6 +25,6 @@ export default function CounterRedux() {
         Decrement
       </button>
       <hr/>
-   </div>
+    </div>
   );
 }

@@ -1,104 +1,53 @@
-"use client";
-import { useState } from "react";
-import ModuleEditor from "./ModuleEditor";
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from "react-bootstrap";
+import { FaPlus } from "react-icons/fa6";
 import GreenCheckmark from "./GreenCheckmark";
-import { FaCheckCircle, FaTimes } from "react-icons/fa";
-import { Button, Dropdown } from "react-bootstrap";
+import ModuleEditor from "./ModuleEditor";
+import { useState } from "react";
 
-interface ModulesControlsProps {
-  moduleName: string;
-  setModuleName: (title: string) => void;
-  addModule: () => void;
-}
-
-export default function ModulesControls({
-  moduleName,
-  setModuleName,
-  addModule,
-}: ModulesControlsProps) {
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
+export default function ModulesControls({ moduleName, setModuleName, addModule }:
+{ moduleName: string; setModuleName: (title: string) => void; addModule: () => void; }) {
+   const [show, setShow] = useState(false);
+ const handleClose = () => setShow(false);
+ const handleShow = () => setShow(true);
   return (
-    <div className="d-flex justify-content-end mb-3">
-      <div className="d-flex gap-1">
-        <button
-          className="btn btn-sm"
-          style={{
-            backgroundColor: "#f5f5f5",
-            border: "1px solid #dee2e6",
-            color: "black",
-          }}
-        >
-          Collapse All
-        </button>
+    <div id="wd-modules-controls" className="text-nowrap">
+      <Button variant="danger" onClick={handleShow} size="lg" className="me-1 float-end" id="wd-add-module-btn">
+        <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
+        Module
+      </Button>
+      <Dropdown className="float-end me-2">
+        <DropdownToggle variant="secondary" size="lg" id="wd-publish-all-btn">
+          <GreenCheckmark /> Publish All
+        </DropdownToggle>
+        <DropdownMenu>
+          <DropdownItem id="wd-publish-all">
+            <GreenCheckmark /> Publish All
+          </DropdownItem>
+          <DropdownItem id="wd-publish-all-modules-and-items">
+            <GreenCheckmark /> Publish all modules and items
+          </DropdownItem>
+          <DropdownItem id="wd-publish-modules-only">
+            <GreenCheckmark /> Publish modules only
+          </DropdownItem>
+          
+          <DropdownItem id="wd-unpublish-all-modules-and-items">
+            Unpublish all modules and items
+          </DropdownItem>
+          <DropdownItem id="wd-unpublish-modules-only">
+            Unpublish modules only
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
 
-        <button
-          className="btn btn-sm"
-          style={{
-            backgroundColor: "#f5f5f5",
-            border: "1px solid #dee2e6",
-            color: "black",
-          }}
-        >
-          View Progress
-        </button>
-
-        {/* react-bootstrap Dropdown */}
-        <Dropdown align="end">
-          <Dropdown.Toggle
-            as={Button}
-            variant="secondary"
-            size="sm"
-            id="publishAllDropdown"
-            className="d-flex align-items-center"
-          >
-            <GreenCheckmark />
-            <span className="ms-1">Publish All</span>
-          </Dropdown.Toggle>
-
-          <Dropdown.Menu>
-            <Dropdown.Item className="d-flex align-items-center" href="#">
-              <FaCheckCircle className="me-2 text-success" />
-              Publish all modules and items
-            </Dropdown.Item>
-
-            <Dropdown.Item className="d-flex align-items-center" href="#">
-              <FaCheckCircle className="me-2 text-success" />
-              Publish modules only
-            </Dropdown.Item>
-
-            <Dropdown.Item className="d-flex align-items-center" href="#">
-              <FaTimes className="me-2 text-muted" />
-              Unpublish all modules and items
-            </Dropdown.Item>
-
-            <Dropdown.Item className="d-flex align-items-center" href="#">
-              <FaTimes className="me-2 text-muted" />
-              Unpublish modules only
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-
-        <button
-          className="btn btn-danger btn-sm d-flex align-items-center"
-          onClick={handleShow}
-        >
-          <span className="me-1">+</span>
-          Module
-        </button>
-
-        <ModuleEditor
-          show={show}
-          handleClose={handleClose}
-          dialogTitle="Add Module"
-          moduleName={moduleName}
-          setModuleName={setModuleName}
-          addModule={addModule}
-        />
-      </div>
+      <Button variant="secondary" size="lg" className="float-end me-2" id="wd-view-progress">
+        View Progress
+      </Button>
+      <Button variant="secondary" size="lg" className="float-end me-2" id="wd-collapse-all">
+        Collapse All
+      </Button>
+            <ModuleEditor show={show} handleClose={handleClose} dialogTitle="Add Module"
+       moduleName={moduleName} setModuleName={setModuleName} addModule={addModule} />
     </div>
   );
 }
+

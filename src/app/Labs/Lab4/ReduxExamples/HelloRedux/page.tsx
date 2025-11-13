@@ -1,4 +1,4 @@
-"use client"; 
+"use client"; // Add this if you're using Next.js App Router
 
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";

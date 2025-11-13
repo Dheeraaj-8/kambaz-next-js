@@ -1,4 +1,3 @@
-"use client"
 import { useState } from "react";
 import { FormControl } from "react-bootstrap";
 export default function StringStateVariables() {
@@ -11,4 +10,3 @@ export default function StringStateVariables() {
         defaultValue={firstName}
         onChange={(e) => setFirstName(e.target.value)}/>
 <hr/></div>);}
-

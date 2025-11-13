@@ -1,78 +1,90 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import Link from "next/link";
+import * as client from "../client";
 import { useRouter } from "next/navigation";
 import { setCurrentUser } from "../reducer";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useState } from "react";
-import { FormControl, Button, Alert } from "react-bootstrap";
+import { Form, FormControl, Button, Alert } from "react-bootstrap";
 
 export default function Signin() {
-  const [credentials, setCredentials] = useState({ username: "", password: "" });
+  const [credentials, setCredentials] = useState<any>({ username: "", password: "" });
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const router = useRouter();
-  const { users } = useSelector((state: any) => state.accountReducer);
   
-  const signin = () => {
-    setError("");
-
+  const signin = async () => {
+    // Validation: Check if fields are empty
     if (!credentials.username || !credentials.password) {
-      setError("Please enter username and password");
+      setError("Please enter both username and password.");
       return;
     }
 
-    const user = users.find(
-      (u: any) =>
-        u.username === credentials.username &&
-        u.password === credentials.password
-    );
-    
-    if (!user) {
-      setError("Invalid username or password");
-      return;
+    try {
+      setError(""); // Clear any previous errors
+      const user = await client.signin(credentials);
+      if (!user) {
+        setError("User does not exist. Please check your credentials or sign up.");
+        return;
+      }
+      dispatch(setCurrentUser(user));
+      router.push("/Dashboard");
+    } catch (err: any) {
+      // Handle error from server
+      if (err.response && err.response.status === 401) {
+        setError("Invalid username or password. Please try again.");
+      } else if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message);
+      } else {
+        setError("An error occurred. Please try again.");
+      }
     }
-    
-    dispatch(setCurrentUser(user));
-    router.push("/Dashboard");
   };
 
   return (
-    <div className="p-4">
-      <div id="wd-signin-screen" style={{ maxWidth: "300px", width: "100%" }}>
-        <h3 className="fw-bold mb-3">Sign in</h3>
-        
-        {error && (
-          <Alert variant="danger" className="py-2 px-3 small">
-            {error}
-          </Alert>
-        )}
-
+    <div id="wd-signin-screen" className="p-4" style={{ maxWidth: "400px" }}>
+      <h3>Sign in</h3>
+      
+      {/* Error Alert */}
+      {error && (
+        <Alert variant="danger" dismissible onClose={() => setError("")}>
+          {error}
+        </Alert>
+      )}
+      
+      <Form>
         <FormControl
           value={credentials.username}
           onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
-          className="mb-2 p-2"
           placeholder="username"
+          className="wd-username mb-2"
           id="wd-username"
-          style={{ fontSize: "0.9rem" }}
+          autoComplete="off"
+          required
         />
         <FormControl
           value={credentials.password}
           onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
-          className="mb-2 p-2"
           placeholder="password"
           type="password"
+          className="wd-password mb-2"
           id="wd-password"
-          style={{ fontSize: "0.9rem" }}
+          autoComplete="new-password"
+          required
         />
-        <Button onClick={signin} id="wd-signin-btn" className="w-100 mb-2" style={{ fontSize: "0.9rem" }}>
+        <Button 
+          onClick={signin} 
+          variant="primary" 
+          className="w-100 mb-2"
+          id="wd-signin-btn"
+        >
           Sign in
         </Button>
-        <div className="text-center">
-          <Link id="wd-signup-link" href="/Account/Signup" className="text-decoration-none small">
-            Sign up
-          </Link>
-        </div>
-      </div>
+        <Link href="/Account/Signup" id="wd-signup-link">
+          Sign up
+        </Link>
+      </Form>
     </div>
   );
 }
