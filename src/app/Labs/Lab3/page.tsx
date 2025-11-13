@@ -28,8 +28,8 @@ import Add from "./Add";
 import Square from "./Square";
 import Highlight from "./Highlight";
 import PathParameters from "./PathParameters";
-import TodoItem from "./Todos/TodoItem";
-import TodoList from "./Todos/TodoList";
+import TodoItem from "../Lab3/todos/TodoItem";
+import TodoList from "../Lab3/todos/TodoList";
 import ArrayIndexAndLength from "./ArrayIndexAndLength";
 
 export default function Lab3() {
