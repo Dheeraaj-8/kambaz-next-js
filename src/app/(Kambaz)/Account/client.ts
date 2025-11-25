@@ -45,7 +45,6 @@ export const updateUser = async (user: any) => {
   return response.data;
 };
 
-// ========== USER MANAGEMENT FUNCTIONS ==========
 
 export const findAllUsers = async () => {
   const response = await axiosWithCredentials.get(USERS_API);
@@ -54,6 +53,11 @@ export const findAllUsers = async () => {
 
 export const findUsersByRole = async (role: string) => {
   const response = await axiosWithCredentials.get(`${USERS_API}?role=${role}`);
+  return response.data;
+};
+
+export const findUsersByPartialName = async (name: string) => {
+  const response = await axios.get(`${USERS_API}?name=${name}`);
   return response.data;
 };
 

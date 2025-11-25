@@ -34,4 +34,24 @@ body   {
     border-left: 3px solid green !important;
   }
   
-  
+  /* Default state */
+.nav-custom {
+  color: #dc3545 !important; /* text-danger red */
+  border-left: 0 !important;
+  text-decoration: none;
+  background: none !important;
+}
+
+/* Active state */
+.active-link {
+  color: black !important;
+  border-left: 3px solid black !important;
+  background: none !important;
+  font-weight: 500;
+}
+
+/* Remove Bootstrap hover blue */
+.nav-custom:hover {
+  color: black !important;
+  background: none !important;
+}

@@ -39,7 +39,7 @@ export default function Assignments() {
   const confirmDelete = async () => {
     if (assignmentToDelete) {
       await client.deleteAssignment(assignmentToDelete._id);
-      dispatch(deleteAssignment(assignmentToDelete._id));  // ← Changed from deleteAssignmentAction
+      dispatch(deleteAssignment(assignmentToDelete._id)); 
       setShowDeleteModal(false);
       setAssignmentToDelete(null);
     }
