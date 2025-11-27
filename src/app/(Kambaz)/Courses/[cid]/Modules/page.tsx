@@ -8,7 +8,7 @@ import ModuleControlButtons from "./ModuleControlButtons";
 import ModulesControls from "./ModulesControls";
 import LessonControlButtons from "./LessonControlButtons";
 import { useSelector, useDispatch } from "react-redux";
-import { setModules, addModule, editModule, updateModule } from "./reducer";
+import { setModules, editModule, updateModule } from "./reducer";
 
 export default function Modules() {
   const { cid } = useParams();
@@ -16,38 +16,44 @@ export default function Modules() {
   const { modules } = useSelector((state: any) => state.modulesReducer);
   const dispatch = useDispatch();
   
+  const fetchModules = async () => {
+    if (!cid || Array.isArray(cid)) return;
+    console.log("=== FETCHING MODULES FROM API ===");
+    const fetchedModules = await client.findModulesForCourse(cid as string);
+    console.log("=== RAW MODULES FROM API ===", fetchedModules);
+    dispatch(setModules(fetchedModules));
+  };
+  
   const onCreateModuleForCourse = async () => {
     if (!cid || Array.isArray(cid)) return;
     const newModule = { name: moduleName, course: cid };
-    const createdModule = await client.createModuleForCourse(cid, newModule);  // ✅ Renamed from 'module'
-    dispatch(addModule(createdModule));
+    await client.createModuleForCourse(cid, newModule);
+    
+    // ✅ Refetch to ensure sync
+    await fetchModules();
     setModuleName("");
   };
 
   const onRemoveModule = async (moduleId: string) => {
     if (!cid || Array.isArray(cid)) return;
     await client.deleteModule(cid, moduleId);
-    dispatch(setModules(modules.filter((m: any) => m._id !== moduleId)));
+    
+    // ✅ Refetch instead of filtering locally
+    await fetchModules();
   };
 
-  const onUpdateModule = async (moduleToUpdate: any) => {  // ✅ Renamed from 'module'
+  const onUpdateModule = async (moduleToUpdate: any) => {
     if (!cid || Array.isArray(cid)) return;
     console.log("=== SAVING MODULE ===", moduleToUpdate);
     await client.updateModule(cid, moduleToUpdate);
-    dispatch(setModules(modules.map((m: any) => (m._id === moduleToUpdate._id ? moduleToUpdate : m))));
-  };
-
-  const fetchModules = async () => {
-    if (!cid || Array.isArray(cid)) return;  // ✅ Added guard
-    console.log("=== FETCHING MODULES FROM API ===");
-    const fetchedModules = await client.findModulesForCourse(cid as string);  // ✅ Renamed from 'modules'
-    console.log("=== RAW MODULES FROM API ===", fetchedModules);
-    dispatch(setModules(fetchedModules));
+    
+    // ✅ Refetch to ensure sync
+    await fetchModules();
   };
   
   useEffect(() => {
     fetchModules();
-  }, [cid]);  // ✅ Only cid as dependency - fetchModules recreated each render
+  }, [cid]);
 
   return (
     <div className="wd-modules">
@@ -58,8 +64,7 @@ export default function Modules() {
       />
       <br /><br /><br /><br />
       <ListGroup id="wd-modules" className="rounded-0">
-        {modules.map((moduleItem: any) => {  // ✅ Renamed from 'module'
-          console.log("Rendering module:", moduleItem._id, moduleItem.name);
+        {modules.map((moduleItem: any) => {
           return (
             <ListGroupItem key={moduleItem._id} className="wd-module p-0 mb-5 fs-5 border-gray">
               {/* Module Title Section */}
@@ -85,8 +90,6 @@ export default function Modules() {
                   moduleId={moduleItem._id}
                   deleteModule={(moduleId) => onRemoveModule(moduleId)}
                   editModule={(moduleId) => {
-                    console.log("=== EDIT CLICKED ===");
-                    console.log("Editing module ID:", moduleId);
                     dispatch(editModule(moduleId));
                   }} 
                 />
@@ -125,7 +128,7 @@ export default function Modules() {
                   <button 
                     className="btn btn-secondary"
                     onClick={() => {
-                      fetchModules(); // Refresh to discard changes
+                      fetchModules();
                     }}
                   >
                     Cancel
