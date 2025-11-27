@@ -9,7 +9,7 @@ export default function CourseNavigation({ cid }: { cid: string }) {
   const getLinkHref = (link: string) => {
     if (link === "Piazza") return "https://piazza.com/";
     if (link === "Zoom") return "https://www.zoom.com/";
-    if (link === "People") return `/Courses/${cid}/People/Table`;
+    if (link === "People") return `/Courses/${cid}/People`;
     return `/Courses/${cid}/${link}`;
   };
 

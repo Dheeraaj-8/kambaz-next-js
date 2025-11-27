@@ -117,36 +117,36 @@ export default function Dashboard() {
   return (
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
-      
+
       {/* Course Management - Only show when NOT showing all courses */}
       {!showAllCourses && currentUser?.role === "FACULTY" && (
         <>
           <h5>New Course
             <button className="btn btn-primary float-end"
-                    id="wd-add-new-course-click"
-                    onClick={onAddNewCourse}> Add </button>
+              id="wd-add-new-course-click"
+              onClick={onAddNewCourse}> Add </button>
             <button className="btn btn-warning float-end me-2"
-                    onClick={onUpdateCourse} id="wd-update-course-click">
+              onClick={onUpdateCourse} id="wd-update-course-click">
               Update </button>
           </h5><br />
-          <FormControl 
-            value={course.name} 
-            className="mb-2" 
-            onChange={(e) => setCourse({ ...course, name: e.target.value })} 
+          <FormControl
+            value={course.name}
+            className="mb-2"
+            onChange={(e) => setCourse({ ...course, name: e.target.value })}
           />
-          <FormControl 
+          <FormControl
             value={course.description}
-            onChange={(e) => setCourse({ ...course, description: e.target.value })} 
+            onChange={(e) => setCourse({ ...course, description: e.target.value })}
           />
           <hr />
         </>
       )}
-      
+
       <div className="d-flex justify-content-between align-items-center">
         <h2 id="wd-dashboard-published">
           {showAllCourses ? `All Courses (${courses.length})` : `Published Courses (${enrolledCourses.length})`}
         </h2>
-        <Button 
+        <Button
           variant="primary"
           onClick={() => setShowAllCourses(!showAllCourses)}
           id="wd-enrollments-btn"
@@ -155,15 +155,21 @@ export default function Dashboard() {
         </Button>
       </div>
       <hr />
-      
+
       <div id="wd-dashboard-courses">
         <Row xs={1} md={5} className="g-4">
           {displayedCourses.map((c: any) => (
-            <Col key={c._id} className="wd-dashboard-course" style={{ width: "300px" }}>
+            <Col
+              key={c._id}  // ✅ This should already be here
+              className="wd-dashboard-course"
+              style={{ width: "300px" }}
+            >
               <Card>
-                <Link href={`/Courses/${c._id}/Home`}
-                      className="wd-dashboard-course-link text-decoration-none text-dark" >
-                  <CardImg src="images/nextjs.png" variant="top" width="100%" height={160} />
+                <Link
+                  href={`/Courses/${c._id}/Home`}
+                  className="wd-dashboard-course-link text-decoration-none text-dark"
+                >
+                  <CardImg src="/images/nextjs.png" variant="top" width="100%" height={160} />
                   <CardBody className="card-body">
                     <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden">
                       {c.name}
@@ -171,10 +177,8 @@ export default function Dashboard() {
                     <CardText className="wd-dashboard-course-description overflow-hidden" style={{ height: "100px" }}>
                       {c.description}
                     </CardText>
-                    
-                    {/* Show different buttons based on view mode */}
+
                     {showAllCourses ? (
-                      // Enrollment view - show Enroll/Unenroll buttons
                       <>
                         <Button variant="primary"> Go </Button>
                         {isEnrolled(c._id) ? (
@@ -200,24 +204,28 @@ export default function Dashboard() {
                         )}
                       </>
                     ) : (
-                      // Regular view - show Go and management buttons
                       <>
                         <Button variant="primary"> Go </Button>
                         {currentUser?.role === "FACULTY" && (
                           <>
-                            <button onClick={(event) => {
-                              event.preventDefault();
-                              onDeleteCourse(c._id);
-                            }} className="btn btn-danger float-end"
-                                id="wd-delete-course-click">
+                            <button
+                              onClick={(event) => {
+                                event.preventDefault();
+                                onDeleteCourse(c._id);
+                              }}
+                              className="btn btn-danger float-end"
+                              id="wd-delete-course-click"
+                            >
                               Delete
                             </button>
-                            <button id="wd-edit-course-click"
-                                    onClick={(event) => {
-                                      event.preventDefault();
-                                      setCourse(c);
-                                    }}
-                                    className="btn btn-warning me-2 float-end" >
+                            <button
+                              id="wd-edit-course-click"
+                              onClick={(event) => {
+                                event.preventDefault();
+                                setCourse(c);
+                              }}
+                              className="btn btn-warning me-2 float-end"
+                            >
                               Edit
                             </button>
                           </>

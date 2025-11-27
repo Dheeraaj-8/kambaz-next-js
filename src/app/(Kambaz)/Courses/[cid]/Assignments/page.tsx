@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
@@ -11,15 +12,18 @@ import { CiSearch } from "react-icons/ci";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteAssignment, setAssignments } from "./reducer";
 import { Modal, Button } from "react-bootstrap";
-import * as client from "./client";
+import * as client from "../../client";
 
 export default function Assignments() {
   const { cid } = useParams();
   const dispatch = useDispatch();
   const { assignments } = useSelector((state: any) => state.assignmentsReducer);
-  
+  const { currentUser } = useSelector((state: any) => state.accountReducer);  // ✅ Get current user
+
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [assignmentToDelete, setAssignmentToDelete] = useState<any>(null);
+
+  const isFaculty = currentUser?.role === "FACULTY";  // ✅ Check if faculty
 
   const fetchAssignments = async () => {
     if (!cid || Array.isArray(cid)) return;
@@ -37,9 +41,10 @@ export default function Assignments() {
   };
 
   const confirmDelete = async () => {
+    if (!cid || Array.isArray(cid)) return;
     if (assignmentToDelete) {
-      await client.deleteAssignment(assignmentToDelete._id);
-      dispatch(deleteAssignment(assignmentToDelete._id)); 
+      await client.deleteAssignment(cid, assignmentToDelete._id);
+      dispatch(deleteAssignment(assignmentToDelete._id));
       setShowDeleteModal(false);
       setAssignmentToDelete(null);
     }
@@ -64,16 +69,20 @@ export default function Assignments() {
             id="wd-search-input"
           />
         </div>
-        <div>
-          <button className="btn btn-secondary me-2" id="wd-group-add">
-            <FaPlus className="me-1" /> Group
-          </button>
-          <Link href={`/Courses/${cid}/Assignments/new`}>
-            <button className="btn btn-danger" id="wd-assignment-add">
-              <FaPlus className="me-1" /> Assignment
+
+        {/* ✅ Only show buttons for FACULTY */}
+        {isFaculty && (
+          <div>
+            <button className="btn btn-secondary me-2" id="wd-group-add">
+              <FaPlus className="me-1" /> Group
             </button>
-          </Link>
-        </div>
+            <Link href={`/Courses/${cid}/Assignments/new`}>
+              <button className="btn btn-danger" id="wd-assignment-add">
+                <FaPlus className="me-1" /> Assignment
+              </button>
+            </Link>
+          </div>
+        )}
       </div>
 
       <div className="border rounded">
@@ -86,13 +95,17 @@ export default function Assignments() {
             <span className="border rounded-pill px-2 py-1 me-3" style={{ fontSize: "0.85rem" }}>
               40% of Total
             </span>
-            <FaPlus className="me-3" />
-            <IoEllipsisVertical />
+            {isFaculty && (
+              <>
+                <FaPlus className="me-3" />
+                <IoEllipsisVertical />
+              </>
+            )}
           </div>
         </div>
 
         <ul className="list-group list-group-flush" id="wd-assignment-list">
-          {assignments.map((assignment: any) => (
+          {(assignments || []).map((assignment: any) => (
             <li
               key={assignment._id}
               className="list-group-item py-3 wd-assignment-list-item"
@@ -102,31 +115,45 @@ export default function Assignments() {
                 <BsGripVertical className="fs-5 me-2 text-muted mt-1" />
                 <MdOutlineAssignment className="fs-4 text-success me-3 mt-1" />
                 <div className="flex-grow-1">
-                  <Link
-                    href={`/Courses/${cid}/Assignments/${assignment._id}`}
-                    className="fw-bold text-dark text-decoration-none wd-assignment-link"
-                  >
-                    {assignment.title}
-                  </Link>
+                  {/* ✅ Only make it a link for FACULTY */}
+                  {isFaculty ? (
+                    <Link
+                      href={`/Courses/${cid}/Assignments/${assignment._id}`}
+                      className="fw-bold text-dark text-decoration-none wd-assignment-link"
+                    >
+                      {assignment.title}
+                    </Link>
+                  ) : (
+                    <span className="fw-bold text-dark">
+                      {assignment.title}
+                    </span>
+                  )}
                   <div className="mt-1" style={{ fontSize: "0.85rem", color: "#6c757d" }}>
                     <span className="text-danger">Multiple Modules</span> |{" "}
                     <span className="fw-normal">Not available until</span>{" "}
-                    {assignment.availableFromDate} |
+                    {assignment.availableFromDate ? new Date(assignment.availableFromDate).toLocaleDateString() : "N/A"} |
                     <br />
-                    <span className="fw-normal">Due</span> {assignment.dueDate} |{" "}
+                    <span className="fw-normal">Due</span>{" "}
+                    {assignment.dueDate ? new Date(assignment.dueDate).toLocaleDateString() : "N/A"} |{" "}
                     {assignment.points} pts
                   </div>
                 </div>
                 <div className="d-flex align-items-start">
                   <FaCheckCircle className="text-success fs-5 me-3 mt-1" />
-                  <button
-                    onClick={() => handleDeleteClick(assignment)}
-                    className="btn btn-link text-danger p-0 me-2"
-                    title="Delete Assignment"
-                  >
-                    <FaTrash />
-                  </button>
-                  <IoEllipsisVertical className="fs-5 mt-1" />
+
+                  {/* ✅ Only show delete button for FACULTY */}
+                  {isFaculty && (
+                    <>
+                      <button
+                        onClick={() => handleDeleteClick(assignment)}
+                        className="btn btn-link text-danger p-0 me-2"
+                        title="Delete Assignment"
+                      >
+                        <FaTrash />
+                      </button>
+                      <IoEllipsisVertical className="fs-5 mt-1" />
+                    </>
+                  )}
                 </div>
               </div>
             </li>
@@ -134,23 +161,25 @@ export default function Assignments() {
         </ul>
       </div>
 
-      {/* Delete Confirmation Modal */}
-      <Modal show={showDeleteModal} onHide={cancelDelete}>
-        <Modal.Header closeButton>
-          <Modal.Title>Delete Assignment</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          Are you sure you want to remove the assignment &quot;{assignmentToDelete?.title}&quot;?
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={cancelDelete}>
-            Cancel
-          </Button>
-          <Button variant="danger" onClick={confirmDelete}>
-            Yes, Delete
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      {/* Delete Confirmation Modal - Only for FACULTY */}
+      {isFaculty && (
+        <Modal show={showDeleteModal} onHide={cancelDelete}>
+          <Modal.Header closeButton>
+            <Modal.Title>Delete Assignment</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Are you sure you want to remove the assignment &quot;{assignmentToDelete?.title}&quot;?
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={cancelDelete}>
+              Cancel
+            </Button>
+            <Button variant="danger" onClick={confirmDelete}>
+              Yes, Delete
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
     </div>
   );
 }

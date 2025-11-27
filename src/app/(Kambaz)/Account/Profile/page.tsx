@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import * as client from "../client";
 import { useState, useEffect } from "react";
@@ -11,9 +12,25 @@ export default function Profile() {
   const dispatch = useDispatch();
   const router = useRouter();
   const { currentUser } = useSelector((state: any) => state.accountReducer);
+  // const updateProfile = async () => {
+  //   const updatedProfile = await client.updateUser(profile);
+  //   dispatch(setCurrentUser(updatedProfile));
+  // };
   const updateProfile = async () => {
-    const updatedProfile = await client.updateUser(profile);
-    dispatch(setCurrentUser(updatedProfile));
+    console.log("=== BEFORE UPDATE ===");
+    console.log("Profile to update:", profile);
+    console.log("Current user:", currentUser);
+    
+    try {
+      const updatedProfile = await client.updateUser(profile);
+      console.log("=== AFTER UPDATE ===");
+      console.log("Updated profile from server:", updatedProfile);
+      
+      dispatch(setCurrentUser(updatedProfile));
+      console.log("Dispatched to Redux");
+    } catch (error) {
+      console.error("=== UPDATE ERROR ===", error);
+    }
   };
 
   

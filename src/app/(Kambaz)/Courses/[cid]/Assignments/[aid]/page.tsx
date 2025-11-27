@@ -1,16 +1,25 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { setAssignments } from "../reducer";
-import * as client from "../client";
+import * as client from "../../../client";
 
 export default function AssignmentEditor() {
   const { cid, aid } = useParams();
   const router = useRouter();
   const dispatch = useDispatch();
   const { assignments } = useSelector((state: any) => state.assignmentsReducer);
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+  
+  // ✅ Redirect students away
+  useEffect(() => {
+    if (currentUser && currentUser.role !== "FACULTY") {
+      router.push(`/Courses/${cid}/Assignments`);
+    }
+  }, [currentUser, cid, router]);
   
   const [assignment, setAssignment] = useState({
     title: "",
@@ -21,11 +30,26 @@ export default function AssignmentEditor() {
     availableUntilDate: "",
   });
 
+  // ✅ Helper function to format Date to YYYY-MM-DD
+  const formatDateForInput = (date: any) => {
+    if (!date) return "";
+    const d = new Date(date);
+    if (isNaN(d.getTime())) return "";
+    return d.toISOString().split('T')[0];
+  };
+
   useEffect(() => {
     if (aid !== "new") {
       const existingAssignment = assignments.find((a: any) => a._id === aid);
       if (existingAssignment) {
-        setAssignment(existingAssignment);
+        setAssignment({
+          title: existingAssignment.title || "",
+          description: existingAssignment.description || "",
+          points: existingAssignment.points || 100,
+          dueDate: formatDateForInput(existingAssignment.dueDate),
+          availableFromDate: formatDateForInput(existingAssignment.availableFromDate),
+          availableUntilDate: formatDateForInput(existingAssignment.availableUntilDate),
+        });
       }
     }
   }, [aid, assignments]);
@@ -33,13 +57,19 @@ export default function AssignmentEditor() {
   const handleSave = async () => {
     if (!cid || Array.isArray(cid)) return;
     
+    // ✅ Convert date strings to Date objects before sending
+    const assignmentToSave = {
+      ...assignment,
+      dueDate: assignment.dueDate ? new Date(assignment.dueDate) : null,
+      availableFromDate: assignment.availableFromDate ? new Date(assignment.availableFromDate) : null,
+      availableUntilDate: assignment.availableUntilDate ? new Date(assignment.availableUntilDate) : null,
+    };
+    
     if (aid === "new") {
-      // Create new assignment
-      const newAssignment = await client.createAssignment(cid, assignment);
+      const newAssignment = await client.createAssignment(cid, assignmentToSave);
       dispatch(setAssignments([...assignments, newAssignment]));
     } else {
-      // Update existing assignment
-      const updatedAssignment = await client.updateAssignment({ ...assignment, _id: aid });
+      const updatedAssignment = await client.updateAssignment(cid, { ...assignmentToSave, _id: aid });
       dispatch(setAssignments(
         assignments.map((a: any) => a._id === aid ? updatedAssignment : a)
       ));
@@ -59,7 +89,7 @@ export default function AssignmentEditor() {
           <Form.Control
             id="wd-name"
             type="text"
-            value={assignment.title}
+            value={assignment.title || ""}
             onChange={(e) => setAssignment({ ...assignment, title: e.target.value })}
           />
         </div>
@@ -69,7 +99,7 @@ export default function AssignmentEditor() {
             as="textarea"
             rows={10}
             id="wd-description"
-            value={assignment.description}
+            value={assignment.description || ""}
             onChange={(e) => setAssignment({ ...assignment, description: e.target.value })}
           />
         </div>
@@ -82,8 +112,8 @@ export default function AssignmentEditor() {
             <Form.Control
               id="wd-points"
               type="number"
-              value={assignment.points}
-              onChange={(e) => setAssignment({ ...assignment, points: parseInt(e.target.value) })}
+              value={assignment.points || 100}
+              onChange={(e) => setAssignment({ ...assignment, points: parseInt(e.target.value) || 0 })}
             />
           </Col>
         </Row>
@@ -190,7 +220,7 @@ export default function AssignmentEditor() {
               <Form.Control
                 id="wd-due-date"
                 type="date"
-                value={assignment.dueDate}
+                value={assignment.dueDate || ""}
                 onChange={(e) => setAssignment({ ...assignment, dueDate: e.target.value })}
                 className="mb-3"
               />
@@ -203,7 +233,7 @@ export default function AssignmentEditor() {
                   <Form.Control
                     id="wd-available-from"
                     type="date"
-                    value={assignment.availableFromDate}
+                    value={assignment.availableFromDate || ""}
                     onChange={(e) => setAssignment({ ...assignment, availableFromDate: e.target.value })}
                   />
                 </Col>
@@ -215,7 +245,7 @@ export default function AssignmentEditor() {
                   <Form.Control
                     id="wd-available-until"
                     type="date"
-                    value={assignment.availableUntilDate}
+                    value={assignment.availableUntilDate || ""}
                     onChange={(e) => setAssignment({ ...assignment, availableUntilDate: e.target.value })}
                   />
                 </Col>

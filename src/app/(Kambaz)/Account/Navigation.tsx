@@ -1,62 +1,39 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Nav } from "react-bootstrap";
 import { useSelector } from "react-redux";
 
 export default function AccountNavigation() {
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const pathname = usePathname();
-
-  const isActive = (link: string) => pathname.includes(link);
+  
+  // Build links array based on user state and role
+  const links = currentUser ? ["Profile"] : ["Signin", "Signup"];
+  
+  // Add Users link for ADMIN users
+  if (currentUser && currentUser.role === "ADMIN") {
+    links.push("Users");
+  }
 
   return (
-    <Nav className="flex-column fs-5">
-
-      {/* SIGNIN / SIGNUP IF LOGGED OUT */}
-      {!currentUser && (
-        <>
-          <Nav.Link
-            as={Link}
-            href="/Account/Signin"
-            className={`py-2 nav-custom ${isActive("Signin") ? "active-link" : ""}`}
+    <div id="wd-account-navigation" className="wd list-group fs-5 rounded-0">
+      {links.map((link) => (
+        <div key={link}>
+          <Link
+            href={`/Account/${link}`}
+            id={`wd-account-${link.toLowerCase()}-link`}
+            className={`list-group-item border-0 ${
+              pathname.includes(link)
+                ? "text-black border-start border-dark border-3"
+                : "text-danger"
+            }`}
           >
-            Signin
-          </Nav.Link>
-
-          <Nav.Link
-            as={Link}
-            href="/Account/Signup"
-            className={`py-2 nav-custom ${isActive("Signup") ? "active-link" : ""}`}
-          >
-            Signup
-          </Nav.Link>
-        </>
-      )}
-
-      {/* PROFILE IF LOGGED IN */}
-      {currentUser && (
-        <Nav.Link
-          as={Link}
-          href="/Account/Profile"
-          className={`py-2 nav-custom ${isActive("Profile") ? "active-link" : ""}`}
-        >
-          Profile
-        </Nav.Link>
-      )}
-
-      {/* ADMIN ONLY → USERS */}
-      {currentUser && currentUser.role === "ADMIN" && (
-        <Nav.Link
-          as={Link}
-          href="/Account/Users"
-          className={`py-2 nav-custom ${
-            pathname.endsWith("Users") ? "active-link" : ""
-          }`}
-        >
-          Users
-        </Nav.Link>
-      )}
-    </Nav>
+            {link}
+          </Link>
+          <br />
+        </div>
+      ))}
+    </div>
   );
 }

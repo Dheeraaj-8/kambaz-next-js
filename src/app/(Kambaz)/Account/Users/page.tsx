@@ -1,14 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useState, useEffect } from "react";
-import PeopleTable from "../../Courses/[cid]/People/Table";
+import PeopleTable from "../../Courses/[cid]/People/Table/page";
 import * as client from "../client";
-import FormControl from "react-bootstrap/esm/FormControl";
-import { FaPlus } from "react-icons/fa";
+import { FormControl } from "react-bootstrap";
+import { FaPlus } from "react-icons/fa6";
 
 export default function Users() {
   const [users, setUsers] = useState<any[]>([]);
   const [role, setRole] = useState("");
   const [name, setName] = useState("");
+
   const filterUsersByName = async (name: string) => {
     setName(name);
     if (name) {
@@ -19,27 +21,38 @@ export default function Users() {
     }
   };
 
-
   const filterUsersByRole = async (role: string) => {
-    console.log("Filtering by role:", role);
     setRole(role);
     if (role) {
-      const filteredUsers = await client.findUsersByRole(role);
-      console.log("Received filtered users:", filteredUsers);
-      console.log("Number of users:", filteredUsers.length);
-      setUsers(filteredUsers);
+      const users = await client.findUsersByRole(role);
+      setUsers(users);
     } else {
       fetchUsers();
     }
   };
 
   const fetchUsers = async () => {
+    const users = await client.findAllUsers();
+    setUsers(users);
+  };
+
+  const createUser = async () => {
     try {
-      const allUsers = await client.findAllUsers();
-      console.log("Fetched all users:", allUsers.length);
-      setUsers(allUsers);
-    } catch (err) {
-      console.error("Error fetching users:", err);
+      console.log("Creating new user...");
+      const user = await client.createUser({
+        firstName: "New",
+        lastName: `User${users.length + 1}`,
+        username: `newuser${Date.now()}`,
+        password: "password123",
+        email: `email${users.length + 1}@neu.edu`,
+        section: "S101",
+        role: "STUDENT",
+      });
+      console.log("User created:", user);
+      setUsers([user, ...users]);  // ✅ Add to beginning for visibility
+    } catch (error) {
+      console.error("Error creating user:", error);
+      alert("Failed to create user. Check console for details.");
     }
   };
 
@@ -47,35 +60,28 @@ export default function Users() {
     fetchUsers();
   }, []);
 
-  console.log("Current users state:", users.length, users);
-
-  const createUser = async () => {
-    const user = await client.createUser({
-      firstName: "New",
-      lastName: `User${users.length + 1}`,
-      username: `newuser${Date.now()}`,
-      password: "password123",
-      email: `email${users.length + 1}@neu.edu`,
-      section: "S101",
-      role: "STUDENT",
-    });
-    setUsers([...users, user]);
-  };
-
-
   return (
-    <div className="p-3">
-      <button onClick={createUser} className="float-end btn btn-danger wd-add-people">
+    <div>
+      <button 
+        onClick={createUser} 
+        className="float-end btn btn-danger wd-add-people mb-2"
+      >
         <FaPlus className="me-2" />
-        Users
+        People
       </button>
+      
       <h3>Users</h3>
-      <FormControl onChange={(e) => filterUsersByName(e.target.value)} placeholder="Search people"
-        className="float-start w-25 me-2 wd-filter-by-name" />
-      <select
-        value={role}
+      
+      <FormControl 
+        onChange={(e) => filterUsersByName(e.target.value)} 
+        placeholder="Search people"
+        className="float-start w-25 me-2 wd-filter-by-name" 
+      />
+      
+      <select 
+        value={role} 
         onChange={(e) => filterUsersByRole(e.target.value)}
-        className="form-select float-start w-25 wd-select-role"
+        className="form-select float-start w-25 wd-select-role mb-3"
       >
         <option value="">All Roles</option>
         <option value="STUDENT">Students</option>
