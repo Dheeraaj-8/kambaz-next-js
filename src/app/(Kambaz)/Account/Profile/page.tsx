@@ -20,12 +20,12 @@ export default function Profile() {
     console.log("=== BEFORE UPDATE ===");
     console.log("Profile to update:", profile);
     console.log("Current user:", currentUser);
-    
+
     try {
       const updatedProfile = await client.updateUser(profile);
       console.log("=== AFTER UPDATE ===");
       console.log("Updated profile from server:", updatedProfile);
-      
+
       dispatch(setCurrentUser(updatedProfile));
       console.log("Dispatched to Redux");
     } catch (error) {
@@ -33,13 +33,13 @@ export default function Profile() {
     }
   };
 
-  
+
   const signout = async () => {
     await client.signout();
     dispatch(setCurrentUser(null));
     router.push("/Account/Signin");
   };
-  
+
   useEffect(() => {
     if (!currentUser) {
       router.push("/Account/Signin");
@@ -110,23 +110,21 @@ export default function Profile() {
             />
           </div>
 
-          <div className="mb-3">
-            <Form.Label htmlFor="wd-role">Role</Form.Label>
-            <Form.Select 
-              id="wd-role" 
-              value={profile.role || "USER"}
-              onChange={(e) => setProfile({ ...profile, role: e.target.value })}
-            >
-              <option value="USER">User</option>
-              <option value="ADMIN">Admin</option>
-              <option value="FACULTY">Faculty</option>
+          <Form.Group className="mb-3">
+            <Form.Label>Role</Form.Label>
+            <Form.Select
+              value={profile.role || ""}
+              onChange={(e) => setProfile({ ...profile, role: e.target.value })}>
               <option value="STUDENT">Student</option>
+              <option value="FACULTY">Faculty</option>
+              <option value="TA">TA</option>
+              <option value="ADMIN">Admin</option>
             </Form.Select>
-          </div>
+          </Form.Group>
           <button onClick={updateProfile} className="btn btn-primary w-100 mb-2"> Update </button>
-          <Button 
-            onClick={signout} 
-            variant="danger" 
+          <Button
+            onClick={signout}
+            variant="danger"
             className="w-100"
             id="wd-signout-btn"
           >
