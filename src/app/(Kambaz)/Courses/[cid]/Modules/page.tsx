@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useState, useEffect } from "react";
 import * as client from "../../client";
@@ -9,7 +8,7 @@ import ModuleControlButtons from "./ModuleControlButtons";
 import ModulesControls from "./ModulesControls";
 import LessonControlButtons from "./LessonControlButtons";
 import { useSelector, useDispatch } from "react-redux";
-import { setModules, addModule, editModule, updateModule, deleteModule } from "./reducer";
+import { setModules, addModule, editModule, updateModule } from "./reducer";
 
 export default function Modules() {
   const { cid } = useParams();
@@ -17,13 +16,12 @@ export default function Modules() {
   const { modules } = useSelector((state: any) => state.modulesReducer);
   const dispatch = useDispatch();
   
-  console.log("=== MODULES STATE ===", modules);
-  
   const onCreateModuleForCourse = async () => {
     if (!cid || Array.isArray(cid)) return;
     const newModule = { name: moduleName, course: cid };
-    const module = await client.createModuleForCourse(cid, newModule);
-    dispatch(addModule(module));
+    const createdModule = await client.createModuleForCourse(cid, newModule);  // ✅ Renamed from 'module'
+    dispatch(addModule(createdModule));
+    setModuleName("");
   };
 
   const onRemoveModule = async (moduleId: string) => {
@@ -32,26 +30,24 @@ export default function Modules() {
     dispatch(setModules(modules.filter((m: any) => m._id !== moduleId)));
   };
 
-  const onUpdateModule = async (module: any) => {
+  const onUpdateModule = async (moduleToUpdate: any) => {  // ✅ Renamed from 'module'
     if (!cid || Array.isArray(cid)) return;
-    console.log("=== SAVING MODULE ===", module);
-    await client.updateModule(cid, module);
-    dispatch(setModules(modules.map((m: any) => (m._id === module._id ? module : m))));
+    console.log("=== SAVING MODULE ===", moduleToUpdate);
+    await client.updateModule(cid, moduleToUpdate);
+    dispatch(setModules(modules.map((m: any) => (m._id === moduleToUpdate._id ? moduleToUpdate : m))));
   };
 
   const fetchModules = async () => {
+    if (!cid || Array.isArray(cid)) return;  // ✅ Added guard
     console.log("=== FETCHING MODULES FROM API ===");
-    const modules = await client.findModulesForCourse(cid as string);
-    console.log("=== RAW MODULES FROM API ===", modules);
-    console.log("First module:", modules[0]);
-    console.log("First module _id:", modules[0]?._id);
-    console.log("First module keys:", Object.keys(modules[0] || {}));
-    dispatch(setModules(modules));
+    const fetchedModules = await client.findModulesForCourse(cid as string);  // ✅ Renamed from 'modules'
+    console.log("=== RAW MODULES FROM API ===", fetchedModules);
+    dispatch(setModules(fetchedModules));
   };
   
   useEffect(() => {
     fetchModules();
-  }, [cid]);
+  }, [cid]);  // ✅ Only cid as dependency - fetchModules recreated each render
 
   return (
     <div className="wd-modules">
@@ -62,31 +58,31 @@ export default function Modules() {
       />
       <br /><br /><br /><br />
       <ListGroup id="wd-modules" className="rounded-0">
-        {modules.map((module: any) => {
-          console.log("Rendering module:", module._id, module.name);
+        {modules.map((moduleItem: any) => {  // ✅ Renamed from 'module'
+          console.log("Rendering module:", moduleItem._id, moduleItem.name);
           return (
-            <ListGroupItem key={module._id} className="wd-module p-0 mb-5 fs-5 border-gray">
+            <ListGroupItem key={moduleItem._id} className="wd-module p-0 mb-5 fs-5 border-gray">
               {/* Module Title Section */}
               <div className="wd-title p-3 ps-2 bg-secondary">
                 <BsGripVertical className="me-2 fs-3" />
                 
-                {!module.editing && module.name}
+                {!moduleItem.editing && moduleItem.name}
                 
-                {module.editing && (
+                {moduleItem.editing && (
                   <FormControl 
                     className="w-50 d-inline-block"
                     placeholder="Module Name"
-                    value={module.name}
+                    value={moduleItem.name}
                     onChange={(e) => {
                       dispatch(
-                        updateModule({ ...module, name: e.target.value })
+                        updateModule({ ...moduleItem, name: e.target.value })
                       );
                     }}
                   />
                 )}
                 
                 <ModuleControlButtons 
-                  moduleId={module._id}
+                  moduleId={moduleItem._id}
                   deleteModule={(moduleId) => onRemoveModule(moduleId)}
                   editModule={(moduleId) => {
                     console.log("=== EDIT CLICKED ===");
@@ -98,19 +94,19 @@ export default function Modules() {
               
               {/* Module Description Section */}
               <div className="wd-module-description p-3 bg-light">
-                {!module.editing && (
-                  <div>{module.description || "No description"}</div>
+                {!moduleItem.editing && (
+                  <div>{moduleItem.description || "No description"}</div>
                 )}
                 
-                {module.editing && (
+                {moduleItem.editing && (
                   <FormControl 
                     as="textarea"
                     rows={3}
                     placeholder="Module Description"
-                    value={module.description || ""}
+                    value={moduleItem.description || ""}
                     onChange={(e) => {
                       dispatch(
-                        updateModule({ ...module, description: e.target.value })
+                        updateModule({ ...moduleItem, description: e.target.value })
                       );
                     }}
                   />
@@ -118,11 +114,11 @@ export default function Modules() {
               </div>
               
               {/* Save Button when editing */}
-              {module.editing && (
+              {moduleItem.editing && (
                 <div className="p-3 bg-light border-top">
                   <button 
                     className="btn btn-success me-2"
-                    onClick={() => onUpdateModule({ ...module, editing: false })}
+                    onClick={() => onUpdateModule({ ...moduleItem, editing: false })}
                   >
                     Save
                   </button>
@@ -138,9 +134,9 @@ export default function Modules() {
               )}
               
               {/* Lessons List */}
-              {!module.editing && module.lessons && module.lessons.length > 0 && (
+              {!moduleItem.editing && moduleItem.lessons && moduleItem.lessons.length > 0 && (
                 <ListGroup className="wd-lessons rounded-0">
-                  {module.lessons.map((lesson: any) => (
+                  {moduleItem.lessons.map((lesson: any) => (
                     <ListGroupItem key={lesson._id} className="wd-lesson p-3 ps-1">
                       <BsGripVertical className="me-2 fs-3" /> {lesson.name} 
                       <LessonControlButtons />
